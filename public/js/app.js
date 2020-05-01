@@ -280,8 +280,8 @@ function dropCoin(obj, coin) {
   var target
   if (document.getElementById('r1-c' + currentCol).childNodes.length === 1) {
     setTimeout(function () {
-      indicateTimePort.textContent = ''
-      indicateTimeLand.textContent = ''
+      // indicateTimePort.textContent = ''
+      // indicateTimeLand.textContent = ''
     }, 500)
     indicateTimePort.textContent = 'No More Drop!'
     indicateTimeLand.textContent = 'No More Drop!'
@@ -565,8 +565,8 @@ function timer(time) {
     indicateTimeLand.textContent = '0: ' + seconds;
     if (timeLeft <= 0) {
       setTimeout(function () {
-        indicateTimePort.textContent = ''
-        indicateTimeLand.textContent = ''
+        // indicateTimePort.textContent = ' '
+        // indicateTimeLand.textContent = ' '
       }, 600)
       indicateTimePort.textContent = 'Time Out!'
       indicateTimeLand.textContent = 'Time Out!'

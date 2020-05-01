@@ -111,7 +111,7 @@ a:active {
   color: white;
 }
 
-.modal-username-title {
+.modal-title {
   padding-top: 100px;
 }
 
@@ -173,7 +173,7 @@ input {
 .on-hold-row {
   display: flex;
   justify-content: center;
-  min-height: 70px;
+  min-height: 62px;
   width: 100%;
 }
 
@@ -253,7 +253,7 @@ input {
     height: 48px;
   }
 
-  .modal-username-title {
+  .modal-title {
     padding-top: 20px;
   }
 
@@ -295,15 +295,11 @@ input {
   }
 
   .main-container {
-    height: 300px;
+    height: 90%;
   }
 
   header {
     padding-top: 10px;
-  }
-
-  footer {
-    height: 20px;
   }
 
   .on-hold-blocks, .blocks-for-row {
@@ -320,10 +316,6 @@ input {
     width: 80px;
     height: 20px;
     font-size: 10px;
-  }
-
-  .offset-3 {
-    margin: 0;
   }
 }
 
