@@ -103,17 +103,17 @@ function removeTarget() {
 // Move coin by mouseover
 var clickToMove = document.querySelectorAll('.to-move')
 for (var i = 0; i < clickToMove.length; i++) {
-  clickToMove[i].addEventListener('mouseover', function (e) {
-    if (e.target.nodeName !== 'IMG') {
-      if (e.clientX < player.getBoundingClientRect().left) {
-        moveLeft(player)
-        moveCoin.play()
-      } else if (e.clientX > player.getBoundingClientRect().right) {
-        moveRight(player)
-        moveCoin.play()
-      }
-    }
-  })
+  // clickToMove[i].addEventListener('mouseover', function (e) {
+  //   if (e.target.nodeName !== 'IMG') {
+  //     if (e.clientX < player.getBoundingClientRect().left) {
+  //       moveLeft(player)
+  //       moveCoin.play()
+  //     } else if (e.clientX > player.getBoundingClientRect().right) {
+  //       moveRight(player)
+  //       moveCoin.play()
+  //     }
+  //   }
+  // })
 
   clickToMove[i].addEventListener('click', function (e) {
     if (e.target.nodeName !== 'IMG') {
