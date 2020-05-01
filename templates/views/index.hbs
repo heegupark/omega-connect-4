@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{{sitename}} - {{title}}</title>
+  <link rel="icon" href="img/o-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  {{>header}}
+  <main>
+    <!--Begin Game modal-->
+    <div class="modal">
+      <div class="modal-username">
+        <div class="modal-username-title">
+          <h1>{{title}}</h1>
+        </div>
+        <div class="modal-username-box">
+          <label class="modal-msg" for="player1">Player 1</label>
+          <input type="text" placeholder="Enter Username" name="player1" class="player1" autofocus>
+          <label class="modal-msg" for="player2">Player 2 </label>
+          <input type="text" placeholder="Enter Username" name="player2" class="player2" autofocus>
+        </div>
+        <button class="start-btn">Start</button>
+      </div>
+      <div class="modal-type1">
+        <div class="modal-type1-box">
+          <p class="type1-msg1"></p>
+          <p class="type1-msg2"></p>
+          <button class="play-again">Play Again</button>
+        </div>
+      </div>
+    </div>
+    <div class="main-container">
+      <div class="row">
+        <div class="offset-2"></div>
+        <div id="display-board" class="display-board col-8">
+          <div id="score" class="score-box">
+            <div class="row">
+              <div class="offset-1"></div>
+              <div class="username1 col-2">Player 1</div>
+              <div id="username1-score" class="col-1">0</div>
+              <div id="time-left" class="time-left col-4">Time Left</div>
+              <div class="username2 col-2">Player 2</div>
+              <div id="username2-score" class="col-1">0</div>
+              <div class="offset-1"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <button class="new-game-btn">New Game</button>
+            </div>
+            <div class="col-4">
+              <button class="pause-btn">Pause</button>
+            </div>
+            <div class="col-4">
+              <button class="sound-btn">Sound: <span class="sound-onoff">OFF</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="offset-2"></div>
+      </div>
+      <div class="row">
+        <div id="gameboard" class="gameboard col-12">
+          <div class="row">
+            <div class="offset-3"></div>
+            <div class="col-6">
+              <div class="on-hold-row">
+                <div id="r0-c1" class="on-hold-blocks to-move"></div>
+                <div id="r0-c2" class="on-hold-blocks to-move"></div>
+                <div id="r0-c3" class="on-hold-blocks to-move"></div>
+                <div id="r0-c4" class="on-hold-blocks to-move"></div>
+                <div id="r0-c5" class="on-hold-blocks to-move"></div>
+                <div id="r0-c6" class="on-hold-blocks to-move"></div>
+                <div id="r0-c7" class="on-hold-blocks to-move"></div>
+              </div>
+            </div>
+            <div class="offset-3"></div>
+          </div>
+          <div id="animation-row" class="animation-row">
+            <div id="row1" class="row">
+              <div id="r1-c1" class="blocks-for-row"></div>
+              <div id="r1-c2" class="blocks-for-row"></div>
+              <div id="r1-c3" class="blocks-for-row"></div>
+              <div id="r1-c4" class="blocks-for-row"></div>
+              <div id="r1-c5" class="blocks-for-row"></div>
+              <div id="r1-c6" class="blocks-for-row"></div>
+              <div id="r1-c7" class="blocks-for-row"></div>
+            </div>
+            <div id="row2" class="row">
+              <div id="r2-c1" class="blocks-for-row"></div>
+              <div id="r2-c2" class="blocks-for-row"></div>
+              <div id="r2-c3" class="blocks-for-row"></div>
+              <div id="r2-c4" class="blocks-for-row"></div>
+              <div id="r2-c5" class="blocks-for-row"></div>
+              <div id="r2-c6" class="blocks-for-row"></div>
+              <div id="r2-c7" class="blocks-for-row"></div>
+            </div>
+            <div id="row3" class="row">
+              <div id="r3-c1" class="blocks-for-row"></div>
+              <div id="r3-c2" class="blocks-for-row"></div>
+              <div id="r3-c3" class="blocks-for-row"></div>
+              <div id="r3-c4" class="blocks-for-row"></div>
+              <div id="r3-c5" class="blocks-for-row"></div>
+              <div id="r3-c6" class="blocks-for-row"></div>
+              <div id="r3-c7" class="blocks-for-row"></div>
+            </div>
+            <div id="row4" class="row">
+              <div id="r4-c1" class="blocks-for-row"></div>
+              <div id="r4-c2" class="blocks-for-row"></div>
+              <div id="r4-c3" class="blocks-for-row"></div>
+              <div id="r4-c4" class="blocks-for-row"></div>
+              <div id="r4-c5" class="blocks-for-row"></div>
+              <div id="r4-c6" class="blocks-for-row"></div>
+              <div id="r4-c7" class="blocks-for-row"></div>
+            </div>
+            <div id="row5" class="row">
+              <div id="r5-c1" class="blocks-for-row"></div>
+              <div id="r5-c2" class="blocks-for-row"></div>
+              <div id="r5-c3" class="blocks-for-row"></div>
+              <div id="r5-c4" class="blocks-for-row"></div>
+              <div id="r5-c5" class="blocks-for-row"></div>
+              <div id="r5-c6" class="blocks-for-row"></div>
+              <div id="r5-c7" class="blocks-for-row"></div>
+            </div>
+            <div id="row6" class="row">
+              <div id="r6-c1" class="blocks-for-row"></div>
+              <div id="r6-c2" class="blocks-for-row"></div>
+              <div id="r6-c3" class="blocks-for-row"></div>
+              <div id="r6-c4" class="blocks-for-row"></div>
+              <div id="r6-c5" class="blocks-for-row"></div>
+              <div id="r6-c6" class="blocks-for-row"></div>
+              <div id="r6-c7" class="blocks-for-row"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {{>footer}}
+  <script src="js/app.js"></script>
+</body>
+</html>
