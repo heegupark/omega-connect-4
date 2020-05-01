@@ -222,6 +222,12 @@ input {
     width: 100px;
   }
 
+  .new-game-btn-port, .pause-btn-port, .sound-btn-port {
+    width: 100px;
+    height: 20px;
+    font-size: 10px;
+  }
+
   .heegu {
     margin-left: 5px;
   }
@@ -232,9 +238,10 @@ input {
     top: 25px;
   }
 
-  .offset-2 {
+  /* .offset-2, .offset-3 {
     display: none;
-  }
+    margin-left: 0%;
+  } */
 
   .on-hold-blocks, .blocks-for-row {
     width: 53px;
