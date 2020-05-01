@@ -32,7 +32,7 @@ header {
   width: 100%;
   max-width: 1250px;
   /* margin: 50px auto; */
-  min-height: 70vh;
+  min-height: 81vh;
   height: 100%;
 }
 
@@ -99,23 +99,11 @@ a:active {
   display: block;
 }
 
-.modal-win {
+.modal-type1 {
   display: none;
 }
 
-.modal-reset-game {
-  display: none;
-}
-
-.modal-draw {
-  display: none;
-}
-
-.modal-new-game {
-  display: none;
-}
-
-.modal-type1, .modal-username, .modal-reset-game, .modal-draw {
+.modal-type1, .modal-username {
   background-color: rgba(0,0,0,0.8);
   width: 100%;
   height: 100%;
@@ -127,7 +115,7 @@ a:active {
   padding-top: 100px;
 }
 
-.modal-username-box, .modal-type1-box, .modal-draw-box, .modal-reset-game-box {
+.modal-username-box, .modal-type1-box {
   font-size: 18px;
   padding-top: 100px;
 }
@@ -141,7 +129,7 @@ button {
   font-size: 14px;
   width: 150px;
   height: 30px;
-  margin: 20px auto;
+  margin: 20px 10px 20px 10px;
   background-color: rgb(0,0,0,0.9);
   border: 1px solid white;
   color: white;
@@ -159,7 +147,7 @@ input {
   text-align: center;
   background-color: rgb(0,0,0,0.9);
   color: white;
-  margin: 0px 20px 20px 0px;
+  margin: 5px 0px 20px 0px;
 }
 
 .sound-onoff {
@@ -167,14 +155,18 @@ input {
 }
 
 /* layout display body*/
-.display-board {
+.display-board-portrait, .display-board-landscape {
   height: 15%;
+}
+
+.display-board-landscape {
+  display: none;
 }
 
 /* layout game body*/
 .gameboard {
   height: 85%;
-  height: 434px; /* If need to change gameboard size, change this size, .row: height and .col-5: width*/
+  /* height: 434px; If need to change gameboard size, change this size, .row: height and .col-5: width */
   margin-top: 10px;
 }
 
@@ -201,6 +193,131 @@ input {
   width: 60px;
   height: 60px;
   border: 1px solid gold;
+}
+
+/* mobile */
+@media screen and (max-width: 768px) {
+  .display-board-portrait {
+    display: block;
+  }
+
+  .display-board-landscape {
+    display: none;
+  }
+
+  header {
+    padding-top: 30px;
+  }
+
+  footer {
+    padding-bottom: 1px;
+  }
+
+  body {
+    font-size: 12px;
+    line-height: 1rem;
+  }
+
+  button {
+    width: 100px;
+  }
+
+  .heegu {
+    margin-left: 5px;
+  }
+
+  .title {
+    display: block;
+    position: absolute;
+    top: 25px;
+  }
+
+  .offset-2 {
+    display: none;
+  }
+
+  .on-hold-blocks, .blocks-for-row {
+    width: 53px;
+    height: 53px;
+  }
+
+  .coin {
+    width: 48px;
+    height: 48px;
+  }
+
+  .modal-username-title {
+    padding-top: 20px;
+  }
+
+  .modal-username-box {
+    padding-top: 20px;
+  }
+
+  button {
+    margin: 5px;
+    font-size: 14px;
+  }
+
+  footer {
+    margin: 0;
+    padding: 0;
+  }
+
+  .on-hold-row {
+    min-height: 30px;
+  }
+
+  .main-container {
+    height: 550px;
+  }
+}
+
+@media screen and (max-height: 375px) {
+  .display-board-portrait {
+    display: none;
+  }
+
+  .display-board-landscape {
+    display: block;
+  }
+
+  .title {
+    font-size: 14px;
+    top: 10px;
+  }
+
+  .main-container {
+    height: 300px;
+  }
+
+  header {
+    padding-top: 10px;
+  }
+
+  footer {
+    height: 20px;
+  }
+
+  .on-hold-blocks, .blocks-for-row {
+    width: 39px;
+    height: 39px;
+  }
+
+  .coin {
+    width: 35px;
+    height: 35px;
+  }
+
+  .new-game-btn-land, .pause-btn-land, .sound-btn-land {
+    width: 80px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .offset-3 {
+    margin: 0;
+  }
 }
 
 /* layout */

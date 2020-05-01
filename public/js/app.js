@@ -45,12 +45,16 @@ function createCoin(coin) {
 function switchPlayer() {
   if (currentPlayer === 'one') {
     currentPlayer = 'two'
-    userNameOne.style.color = 'white'
-    userNameTwo.style.color = 'gold'
+    userNameOnePort.style.color = 'white'
+    userNameTwoPort.style.color = 'gold'
+    userNameOneLand.style.color = 'white'
+    userNameTwoLand.style.color = 'gold'
   } else {
     currentPlayer = 'one'
-    userNameOne.style.color = 'gold'
-    userNameTwo.style.color = 'white'
+    userNameOnePort.style.color = 'gold'
+    userNameTwoPort.style.color = 'white'
+    userNameOneLand.style.color = 'white'
+    userNameTwoLand.style.color = 'gold'
   }
 
   document.getElementById(currentLocationID).removeChild(player)
@@ -110,14 +114,28 @@ for (var i = 0; i < clickToMove.length; i++) {
       }
     }
   })
+
+  clickToMove[i].addEventListener('click', function (e) {
+    if (e.target.nodeName !== 'IMG') {
+      if (e.clientX < player.getBoundingClientRect().left) {
+        moveLeft(player)
+        moveCoin.play()
+      } else if (e.clientX > player.getBoundingClientRect().right) {
+        moveRight(player)
+        moveCoin.play()
+      }
+    }
+  })
 }
 
 // Click to drop
 var clickToDrop = document.querySelectorAll('.on-hold-blocks')
 for (var i = 0; i < clickToDrop.length; i++) {
   clickToDrop[i].addEventListener('click', function (e) {
-    dropCoin(player, coin)
-    coinDrop.play()
+    if (e.target.nodeName === 'IMG') {
+      dropCoin(player, coin)
+      coinDrop.play()
+    }
   })
 }
 
@@ -180,11 +198,10 @@ var modalUsername = document.querySelector('.modal-username')
 var modalType1 = document.querySelector('.modal-type1')
 
 var playAgainBtn = document.querySelector('.play-again')
-// var playAgainWinBtn = document.querySelector('.play-again-win')
-// var playAgainResetBtn = document.querySelector('.play-again-reset')
-// var playAgainDrawBtn = document.querySelector('.play-again-draw')
-var newGameBtn = document.querySelector('.new-game-btn')
-var pauseBtn = document.querySelector('.pause-btn')
+var newGameBtnPort = document.querySelector('.new-game-btn-port')
+var pauseBtnPort = document.querySelector('.pause-btn-port')
+var newGameBtnLand = document.querySelector('.new-game-btn-land')
+var pauseBtnLand = document.querySelector('.pause-btn-land')
 
 var type1Msg1 = document.querySelector('.type1-msg1')
 var type1Msg2 = document.querySelector('.type1-msg2')
@@ -193,24 +210,44 @@ playAgainBtn.addEventListener('click', function () {
   clickSound.play()
   resetGame(modalType1, timeLeft)
 })
-newGameBtn.addEventListener('click', function () {
+newGameBtnPort.addEventListener('click', function () {
   clickSound.play()
   clearInterval(interval)
-  indicateTime.textContent = 'Time Left'
+  indicateTimePort.textContent = 'Time Left'
+  indicateTimeLand.textContent = 'Time Left'
   removeKeydownEvent()
   modalMgmt(modalType1)
   type1Msg1.textContent = 'Do you want to play again?'
   timeLeft = 10
 })
-pauseBtn.addEventListener('click', function () {
+pauseBtnPort.addEventListener('click', function () {
   clickSound.play()
   clearInterval(interval)
   removeKeydownEvent()
   modalMgmt(modalType1)
   type1Msg1.textContent = 'Paused!'
+  type1Msg2.textContent = 'Please take your time!'
   playAgainBtn.textContent = 'Resume'
 })
-
+newGameBtnLand.addEventListener('click', function () {
+  clickSound.play()
+  clearInterval(interval)
+  indicateTimePort.textContent = 'Time Left'
+  indicateTimeLand.textContent = 'Time Left'
+  removeKeydownEvent()
+  modalMgmt(modalType1)
+  type1Msg1.textContent = 'Do you want to play again?'
+  timeLeft = 10
+})
+pauseBtnLand.addEventListener('click', function () {
+  clickSound.play()
+  clearInterval(interval)
+  removeKeydownEvent()
+  modalMgmt(modalType1)
+  type1Msg1.textContent = 'Paused!'
+  type1Msg2.textContent = 'Please take your time!'
+  playAgainBtn.textContent = 'Resume'
+})
 function resetGame(modalObj, time) {
   playerOneCount = 0
   playerTwoCount = 0
@@ -219,31 +256,35 @@ function resetGame(modalObj, time) {
 }
 
 // Restart game totally by new game Btn
-var newGameBtn = document.querySelector('.new-game-btn')
-newGameBtn.addEventListener("click", function() {
-  clickSound.play()
-  startOver
-})
+// var newGameBtn = document.querySelector('.new-game-btn')
+// newGameBtnPort.addEventListener("click", function() {
+//   clickSound.play()
+//   startOver
+// })
 
 function startOver() {
   playerOneCount = 0
   playerTwoCount = 0
   timeLeft = 10
   clearInterval(interval)
-  indicateTime.textContent = 'Time Left'
+  indicateTimePort.textContent = 'Time Left'
+  indicateTimeLandt.textContent = 'Time Left'
   clearScoreFields()
 }
 
 function dropCoin(obj, coin) {
-  indicateTime.textContent = '0: 10'
+  indicateTimePort.textContent = '0: 10'
+  indicateTimeLand.textContent = '0: 10'
   currentLocationID = obj.parentNode.id
   var currentCol = obj.parentNode.id[4]
   var target
   if (document.getElementById('r1-c' + currentCol).childNodes.length === 1) {
     setTimeout(function () {
-      indicateTime.textContent = ''
+      indicateTimePort.textContent = ''
+      indicateTimeLand.textContent = ''
     }, 500)
-    indicateTime.textContent = 'No More Drop!'
+    indicateTimePort.textContent = 'No More Drop!'
+    indicateTimeLand.textContent = 'No More Drop!'
     alertSound.play();
   } else {
     for (var i = rows - 1; i >= 0; i--) {
@@ -326,7 +367,8 @@ function checkWinCondition(currentPlayer, row, col) {
         winSound.play();
         timeLeft = 10
         clearInterval(interval)
-        indicateTime.textContent = 'Time Left'
+        indicateTimePort.textContent = 'Time Left'
+        indicateTimeLand.textContent = 'Time Left'
         removeKeydownEvent()
         break
       }
@@ -345,7 +387,8 @@ function checkWinCondition(currentPlayer, row, col) {
           winSound.play();
           timeLeft = 10
           clearInterval(interval)
-          indicateTime.textContent = 'Time Left'
+          indicateTimePort.textContent = 'Time Left'
+          indicateTimeLand.textContent = 'Time Left'
           removeKeydownEvent()
           break
         }
@@ -366,7 +409,8 @@ function checkWinCondition(currentPlayer, row, col) {
           winSound.play();
           timeLeft = 10
           clearInterval(interval)
-          indicateTime.textContent = 'Time Left'
+          indicateTimePort.textContent = 'Time Left'
+          indicateTimeLand.textContent = 'Time Left'
           removeKeydownEvent()
           break
         }
@@ -386,7 +430,8 @@ function checkWinCondition(currentPlayer, row, col) {
           winSound.play()
           timeLeft = 10
           clearInterval(interval)
-          indicateTime.textContent = 'Time Left'
+          indicateTimePort.textContent = 'Time Left'
+          indicateTimeLand.textContent = 'Time Left'
           removeKeydownEvent()
           break
         }
@@ -403,7 +448,8 @@ function checkDraw() {
     type1Msg2.textContent = 'Play Start Again!'
     timeLeft = 10
     clearInterval(interval)
-    indicateTime.textContent = 'Time Left'
+    indicateTimePort.textContent = 'Time Left'
+    indicateTimeLand.textContent = 'Time Left'
     alertSound.play();
   }
 }
@@ -430,16 +476,21 @@ function resetGameBoard() {
   }
 }
 
-var username1Score = document.getElementById('username1-score')
-var username2Score = document.getElementById('username2-score')
+var username1ScorePort = document.querySelector('.username1-score-port')
+var username2ScorePort = document.querySelector('.username2-score-port')
+var username1ScoreLand = document.querySelector('.username1-score-land')
+var username2ScoreLand = document.querySelector('.username2-score-land')
 
 function score(player) {
   if (player === 'one') {
     playerOneScore++
-    username1Score.textContent = playerOneScore
+    username1ScorePort.textContent = playerOneScore
+    username1ScoreLand.textContent = playerOneScore
+
   } else if (player === 'two') {
     playerTwoScore++
-    username2Score.textContent = playerTwoScore
+    username2ScorePort.textContent = playerTwoScore
+    username2ScoreLand.textContent = playerTwoScore
   }
 }
 
@@ -460,8 +511,10 @@ function displayWinner(player) {
 function clearScoreFields() {
   playerOneScore = 0;
   playerTwoScore = 0;
-  username1Score.textContent = playerOneScore;
-  username2Score.textContent = playerTwoScore;
+  username1ScorePort.textContent = playerOneScore;
+  username2ScorePort.textContent = playerTwoScore;
+  username1ScoreLand.textContent = playerOneScore;
+  username2ScoreLand.textContent = playerTwoScore;
 }
 
 // Add sound effect
@@ -495,9 +548,10 @@ function playSound(src, isLoop) {
 var timeLeft
 var minutes = 0
 var seconds = 0
-var indicateTime = document.getElementById('time-left')
+var indicateTimePort = document.querySelector('.time-left-port')
+var indicateTimeLand = document.querySelector('.time-left-land')
 var interval
-var displayMsg = document.querySelector('.display-msg')
+
 function timer(time) {
   timeLeft = time
   clearInterval(interval)
@@ -507,12 +561,15 @@ function timer(time) {
     } else {
       seconds = timeLeft % 60;
     }
-    indicateTime.textContent = '0: ' + seconds;
+    indicateTimePort.textContent = '0: ' + seconds;
+    indicateTimeLand.textContent = '0: ' + seconds;
     if (timeLeft <= 0) {
       setTimeout(function () {
-        indicateTime.textContent = ''
+        indicateTimePort.textContent = ''
+        indicateTimeLand.textContent = ''
       }, 600)
-      indicateTime.textContent = 'Time Out!'
+      indicateTimePort.textContent = 'Time Out!'
+      indicateTimeLand.textContent = 'Time Out!'
       alertSound.play()
       switchPlayer()
     }
@@ -521,9 +578,16 @@ function timer(time) {
 }
 
 // Sound toggle
-var soundBtn = document.querySelector('.sound-btn')
-var soundOnOff = document.querySelector('.sound-onoff')
-soundBtn.addEventListener('click', function () {
+var soundBtnPort = document.querySelector('.sound-btn-port')
+var soundOnOffPort = document.querySelector('.sound-onoff-port')
+var soundBtnLand = document.querySelector('.sound-btn-land')
+var soundOnOffLand = document.querySelector('.sound-onoff-land')
+
+soundBtnPort.addEventListener('click', function () {
+  clickSound.play()
+  soundToggle()
+})
+soundBtnLand.addEventListener('click', function () {
   clickSound.play()
   soundToggle()
 })
@@ -531,11 +595,15 @@ soundBtn.addEventListener('click', function () {
 function soundToggle() {
   isSoundOn = !isSoundOn
   if (isSoundOn) {
-    soundOnOff.textContent = 'ON'
-    soundOnOff.style.color = 'greenyellow'
+    soundOnOffPort.textContent = 'ON'
+    soundOnOffPort.style.color = 'greenyellow'
+    soundOnOffLand.textContent = 'ON'
+    soundOnOffLand.style.color = 'greenyellow'
   } else {
-    soundOnOff.textContent = 'OFF'
-    soundOnOff.style.color = 'red'
+    soundOnOffPort.textContent = 'OFF'
+    soundOnOffPort.style.color = 'red'
+    soundOnOffLand.textContent = 'OFF'
+    soundOnOffLand.style.color = 'red'
   }
 }
 function modalMgmt(modalObj) {
@@ -555,11 +623,16 @@ startBtn.addEventListener('click', function() {
   startGame(10)
 })
 
-var userNameOne = document.querySelector('.username1')
 var playerOne = document.querySelector('.player1')
-var userNameTwo = document.querySelector('.username2')
 var playerTwo = document.querySelector('.player2')
-var gameTurn = document.getElementById('game-turn')
+
+//for portrait
+var userNameOnePort = document.querySelector('.username1-port')
+var userNameTwoPort = document.querySelector('.username2-port')
+
+//for landscape
+var userNameOneLand = document.querySelector('.username1-land')
+var userNameTwoLand = document.querySelector('.username2-land')
 
 function startGame(time) {
   modalMgmt(null)
@@ -573,18 +646,24 @@ function startGame(time) {
     playerTwo.value = 'player 2'
   }
 
-  userNameOne.textContent = playerOne.value
-  userNameTwo.textContent = playerTwo.value
+  userNameOnePort.textContent = playerOne.value
+  userNameTwoPort.textContent = playerTwo.value
+  userNameOneLand.textContent = playerOne.value
+  userNameTwoLand.textContent = playerTwo.value
 
   coinLocation = firstCoinLocation
   currentLocationID = 'r0-c4'
   if (currentPlayer === 'one') {
-    userNameOne.style.color = 'gold'
-    userNameTwo.style.color = 'white'
+    userNameOnePort.style.color = 'gold'
+    userNameTwoPort.style.color = 'white'
+    userNameOneLand.style.color = 'gold'
+    userNameTwoLand.style.color = 'white'
     coinLocation.appendChild(playerOneCoinObj)
   } else if (currentPlayer === 'two') {
-    userNameOne.style.color = 'white'
-    userNameTwo.style.color = 'gold'
+    userNameOnePort.style.color = 'white'
+    userNameTwoPort.style.color = 'gold'
+    userNameOneLand.style.color = 'white'
+    userNameTwoLand.style.color = 'gold'
     coinLocation.appendChild(playerTwoCoinObj)
   }
   displayTarget()

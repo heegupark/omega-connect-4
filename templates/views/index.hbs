@@ -19,11 +19,19 @@
           <h1>{{title}}</h1>
         </div>
         <div class="modal-username-box">
-          <label class="modal-msg" for="player1">Player 1</label>
-          <input type="text" placeholder="Enter Username" name="player1" class="player1" autofocus>
-          <label class="modal-msg" for="player2">Player 2 </label>
-          <input type="text" placeholder="Enter Username" name="player2" class="player2" autofocus>
-        </div>
+          <div class="row">
+            <label class="modal-msg" for="player1">Player 1</label>
+          </div>
+          <div class="row">
+            <input type="text" placeholder="Enter Username" name="player1" class="player1" autofocus>
+          </div>
+          <div class="row">
+            <label class="modal-msg" for="player2">Player 2 </label>
+          </div>
+          <div class="row">
+            <input type="text" placeholder="Enter Username" name="player2" class="player2" autofocus>
+          </div>
+       </div>
         <button class="start-btn">Start</button>
       </div>
       <div class="modal-type1">
@@ -36,34 +44,54 @@
     </div>
     <div class="main-container">
       <div class="row">
-        <div class="offset-2"></div>
-        <div id="display-board" class="display-board col-8">
+        {{!-- <div class="offset-2"></div> --}}
+        <div id="display-board" class="display-board-portrait">
           <div id="score" class="score-box">
             <div class="row">
-              <div class="offset-1"></div>
-              <div class="username1 col-2">Player 1</div>
-              <div id="username1-score" class="col-1">0</div>
-              <div id="time-left" class="time-left col-4">Time Left</div>
-              <div class="username2 col-2">Player 2</div>
-              <div id="username2-score" class="col-1">0</div>
-              <div class="offset-1"></div>
+              {{!-- <div class="offset-1"></div> --}}
+              <div class="username1-port col-2">Player 1</div>
+              <div class="username1-score-port col-1">0</div>
+              <div class="time-left-port col-4">Time Left</div>
+              <div class="username2-port col-2">Player 2</div>
+              <div class="username2-score-port col-1">0</div>
+              {{!-- <div class="offset-1"></div> --}}
             </div>
           </div>
           <div class="row">
             <div class="col-4">
-              <button class="new-game-btn">New Game</button>
+              <button class="new-game-btn-port">New Game</button>
             </div>
             <div class="col-4">
-              <button class="pause-btn">Pause</button>
+              <button class="pause-btn-port">Pause</button>
             </div>
             <div class="col-4">
-              <button class="sound-btn">Sound: <span class="sound-onoff">OFF</span></button>
+              <button class="sound-btn-port">Sound: <span class="sound-onoff-port">OFF</span></button>
             </div>
           </div>
         </div>
-        <div class="offset-2"></div>
       </div>
       <div class="row">
+        <div id="display-board" class="display-board-landscape col-2">
+          <div id="score" class="score-box">
+            {{!-- <div class="offset-1"></div> --}}
+            <div class="row">
+              <div class="time-left-land col-12">Time Left</div>
+            </div>
+            <div class="row">
+              <div class="username1-land col-6">Player 1</div>
+              <div class="username1-score-land col-6">0</div>
+            </div>
+            <div class="row">
+              <div class="username2-land col-6">Player 2</div>
+              <div class="username2-score-land col-6">0</div>
+            </div>
+            {{!-- <div class="offset-1"></div> --}}
+          </div>
+          <button class="new-game-btn-land">New Game</button>
+          <button class="pause-btn-land">Pause</button>
+          <button class="sound-btn-land">Sound: <span class="sound-onoff-land">OFF</span></button>
+        </div>
+        {{!-- <div class="offset-2"></div> --}}
         <div id="gameboard" class="gameboard col-12">
           <div class="row">
             <div class="offset-3"></div>
