@@ -272,6 +272,8 @@ function startOver() {
   clearScoreFields()
 }
 
+
+
 function dropCoin(obj, coin) {
   indicateTimePort.textContent = '0: 10'
   indicateTimeLand.textContent = '0: 10'

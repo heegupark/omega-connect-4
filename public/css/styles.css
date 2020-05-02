@@ -173,13 +173,14 @@ input {
 .on-hold-row {
   display: flex;
   justify-content: center;
-  min-height: 62px;
+  min-height: 60px;
   width: 100%;
 }
 
 .on-hold-blocks {
   width: 60px;
   height: 60px;
+  align-items: center;
 }
 
 .animation-row {
@@ -192,7 +193,7 @@ input {
   background-size: cover;
   width: 60px;
   height: 60px;
-  border: 1px solid gold;
+  /* border: 1px solid gold; */
 }
 
 /* mobile */
@@ -353,3 +354,18 @@ input {
 .offset-10 {margin-left: 83.33%;}
 .offset-11 {margin-left: 91.66%;}
 .offset-12 {margin-left: 100%;}
+
+@keyframes drop-coin {
+  from {
+    margin-top: 0px;
+  }
+  to {
+    margin-top: 360px;
+  }
+}
+
+.coin-drop-animation {
+  animation-name: drop-coin;
+  animation-duration: 0.25s;
+  animation-iteration-count: 1;
+}
