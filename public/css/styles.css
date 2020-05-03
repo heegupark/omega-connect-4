@@ -333,6 +333,15 @@ input {
   .main-container {
     height: 550px;
   }
+
+  @keyframes drop-coin {
+    from {
+      margin-top: 0px;
+    }
+    to {
+      margin-top: 315px;
+    }
+  }
 }
 
 @media screen and (max-height: 414px) {
@@ -422,7 +431,7 @@ input {
       margin-top: 0px;
     }
     to {
-      margin-top: 225px;
+      margin-top: 215px;
     }
   }
 }
