@@ -117,7 +117,7 @@ a:active {
 
 .modal-username-box, .modal-type1-box {
   font-size: 18px;
-  padding-top: 100px;
+  padding-top: 80px;
 }
 
 .guide {
@@ -133,6 +133,7 @@ a:active {
   width: 100px;
   height: 100px;
   margin: 0px 10px 0px 10px;
+  box-shadow: 2px 2px 1px gold;
 }
 
 .score-box, .display-msg-box {
