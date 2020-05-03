@@ -112,12 +112,27 @@ a:active {
 }
 
 .modal-title {
-  padding-top: 100px;
+  padding-top: 106px;
 }
 
 .modal-username-box, .modal-type1-box {
   font-size: 18px;
   padding-top: 100px;
+}
+
+.guide {
+  display: block;
+  margin: auto;
+}
+
+.guide > ul {
+  padding-left: 0px;
+}
+
+.horizontal, .vertical, .diagonal {
+  width: 100px;
+  height: 100px;
+  margin: 0px 10px 0px 10px;
 }
 
 .score-box, .display-msg-box {
@@ -255,7 +270,7 @@ input {
   }
 
   .modal-title {
-    padding-top: 20px;
+    padding-top: 62px;
   }
 
   .modal-username-box {
@@ -295,8 +310,47 @@ input {
     top: 10px;
   }
 
+  .modal-title {
+    padding-top: 12px;
+  }
+
   .main-container {
     height: 90%;
+  }
+
+  .modal-username-box {
+    padding-top: 0px;
+  }
+
+ .modal-msg {
+    font-size: 14px;
+    line-height: 1rem;
+    margin-top: 5px;
+  }
+
+  .player1, .player2 {
+    height: 18px;
+    font-size: 12px;
+    margin: 5px;
+  }
+
+  .guide > ul {
+    height: 10px;
+    margin: 10px;
+  }
+
+  .start-btn {
+    height: 20px;
+    font-size: 12px;
+  }
+
+  .modal-type1-box {
+    padding-top: 50px;
+  }
+
+  .horizontal, .vertical, .diagonal {
+    height: 75px;
+    width: 75px;
   }
 
   header {

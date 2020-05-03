@@ -43,19 +43,35 @@ function createCoin(coin) {
 
 // switch users
 function switchPlayer() {
+  var nextPlayer = ''
+
   if (currentPlayer === 'one') {
     currentPlayer = 'two'
     userNameOnePort.style.color = 'white'
     userNameTwoPort.style.color = 'gold'
     userNameOneLand.style.color = 'white'
     userNameTwoLand.style.color = 'gold'
+    nextPlayer = playerTwo.value
   } else {
     currentPlayer = 'one'
     userNameOnePort.style.color = 'gold'
     userNameTwoPort.style.color = 'white'
     userNameOneLand.style.color = 'white'
     userNameTwoLand.style.color = 'gold'
+    nextPlayer = playerOne.value
   }
+
+  // Display player's turn
+  setTimeout(function () {
+    modalMgmt(null)
+    playAgainBtn.style.display = 'inline'
+    addKeydownEvent()
+  }, 500)
+  removeKeydownEvent()
+  modalMgmt(modalType1)
+  type1Msg1.textContent = nextPlayer + '"' + 's turn'
+  type1Msg2.textContent = ''
+  playAgainBtn.style.display = 'none'
 
   document.getElementById(currentLocationID).removeChild(player)
 
@@ -192,14 +208,11 @@ function moveRight(obj) {
 //resetGame
 var modal = document.querySelector('.modal')
 var modalUsername = document.querySelector('.modal-username')
-// var modalWin = document.querySelector('.modal-win')
-// var modalReset = document.querySelector('.modal-reset-game')
-// var modalDraw = document.querySelector('.modal-draw')
 var modalType1 = document.querySelector('.modal-type1')
 
 var playAgainBtn = document.querySelector('.play-again')
-var newGameBtnPort = document.querySelector('.new-game-btn-port')
 var pauseBtnPort = document.querySelector('.pause-btn-port')
+var newGameBtnPort = document.querySelector('.new-game-btn-port')
 var newGameBtnLand = document.querySelector('.new-game-btn-land')
 var pauseBtnLand = document.querySelector('.pause-btn-land')
 
@@ -218,6 +231,7 @@ newGameBtnPort.addEventListener('click', function () {
   removeKeydownEvent()
   modalMgmt(modalType1)
   type1Msg1.textContent = 'Do you want to play again?'
+  type1Msg2.textContent = ''
   timeLeft = 10
 })
 pauseBtnPort.addEventListener('click', function () {
@@ -272,7 +286,7 @@ function startOver() {
   clearScoreFields()
 }
 
-
+var isWin = false
 
 function dropCoin(obj, coin) {
   indicateTimePort.textContent = '0: 10'
@@ -302,13 +316,15 @@ function dropCoin(obj, coin) {
           playerTwoAnswerArr[i][currentCol - 1] = 1
           playerTwoCount++
         }
-        checkWinCondition(currentPlayer, i, currentCol)
+        isWin = checkWinCondition(currentPlayer, i, currentCol)
         checkDraw()
         break
       }
     }
-    switchPlayer()
-    displayTarget()
+    if(!isWin) {
+      switchPlayer()
+      displayTarget()
+    }
   }
 }
 
@@ -372,6 +388,7 @@ function checkWinCondition(currentPlayer, row, col) {
         indicateTimePort.textContent = 'Time Left'
         indicateTimeLand.textContent = 'Time Left'
         removeKeydownEvent()
+        return true
         break
       }
     }
@@ -392,6 +409,7 @@ function checkWinCondition(currentPlayer, row, col) {
           indicateTimePort.textContent = 'Time Left'
           indicateTimeLand.textContent = 'Time Left'
           removeKeydownEvent()
+          return true
           break
         }
       }
@@ -414,6 +432,7 @@ function checkWinCondition(currentPlayer, row, col) {
           indicateTimePort.textContent = 'Time Left'
           indicateTimeLand.textContent = 'Time Left'
           removeKeydownEvent()
+          return true
           break
         }
       }
@@ -435,6 +454,7 @@ function checkWinCondition(currentPlayer, row, col) {
           indicateTimePort.textContent = 'Time Left'
           indicateTimeLand.textContent = 'Time Left'
           removeKeydownEvent()
+          return true
           break
         }
       }
@@ -608,6 +628,7 @@ function soundToggle() {
     soundOnOffLand.style.color = 'red'
   }
 }
+
 function modalMgmt(modalObj) {
   modal.style.display = 'none'
   modalUsername.style.display = 'none'
@@ -637,6 +658,7 @@ var userNameOneLand = document.querySelector('.username1-land')
 var userNameTwoLand = document.querySelector('.username2-land')
 
 function startGame(time) {
+  isWin = false
   modalMgmt(null)
   resetArray()
   resetGameBoard()
