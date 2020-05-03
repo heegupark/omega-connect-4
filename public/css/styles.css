@@ -76,6 +76,7 @@ a:active {
   border: 1px solid black;
   background-color: gold;
   margin-top: 2px;
+  cursor: pointer;
 }
 
 .coin:hover {
