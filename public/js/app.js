@@ -42,7 +42,7 @@ function createCoin(coin) {
 }
 
 // switch users
-function switchPlayer() {
+function switchPlayer(obj) {
   var nextPlayer = ''
 
   if (currentPlayer === 'one') {
@@ -62,30 +62,36 @@ function switchPlayer() {
   }
 
   // Display player's turn
-  setTimeout(function () {
-    modalMgmt(null)
-    playAgainBtn.style.display = 'inline'
-    addKeydownEvent()
-  }, 500)
   removeKeydownEvent()
-  modalMgmt(modalType1)
-  type1Msg1.textContent = nextPlayer + '"' + 's turn'
-  type1Msg2.textContent = ''
-  playAgainBtn.style.display = 'none'
 
-  document.getElementById(currentLocationID).removeChild(player)
+  setTimeout(function() {
+    modalMgmt(modalType1)
+    type1Msg1.textContent = nextPlayer + '"' + 's turn'
+    type1Msg2.textContent = ''
+    playAgainBtn.style.display = 'none'
 
-  if (currentPlayer === 'one') {
-    player = playerOneCoinObj
-    coin = playerOneCoin
-  } else {
-    player = playerTwoCoinObj
-    coin = playerTwoCoin
-  }
+    document.getElementById(currentLocationID).removeChild(player)
 
-  coinLocation = document.getElementById(currentLocationID)
-  coinLocation.appendChild(player)
-  timeLeft = 10
+    if (currentPlayer === 'one') {
+      player = playerOneCoinObj
+      coin = playerOneCoin
+    } else {
+      player = playerTwoCoinObj
+      coin = playerTwoCoin
+    }
+
+    coinLocation = document.getElementById(currentLocationID)
+    coinLocation.appendChild(player)
+    timeLeft = 10
+
+    setTimeout(function () {
+      modalMgmt(null)
+      playAgainBtn.style.display = 'inline'
+      addKeydownEvent()
+      obj = removeDropCoinAnimation(obj)
+      displayTarget()
+    }, 500)
+  },250)
 }
 
 // Show destination spot
@@ -95,7 +101,8 @@ function displayTarget() {
     for (var i = rows - 1; i >= 0; i--) {
       target = document.getElementById('r' + (i + 1) + '-c' + currentLocationID[4])
       if (target.childNodes.length === 0) {
-        target.style.backgroundColor = 'gold'
+        // target.style.backgroundColor = 'gold'
+        target.style.backgroundColor = 'rgb(249,215,73,0.9)'
         break
       }
     }
@@ -123,10 +130,8 @@ for (var i = 0; i < clickToMove.length; i++) {
     if (e.target.nodeName !== 'IMG') {
       if (e.clientX < player.getBoundingClientRect().left) {
         moveLeft(player)
-        moveCoin.play()
       } else if (e.clientX > player.getBoundingClientRect().right) {
         moveRight(player)
-        moveCoin.play()
       }
     }
   })
@@ -135,10 +140,8 @@ for (var i = 0; i < clickToMove.length; i++) {
     if (e.target.nodeName !== 'IMG') {
       if (e.clientX < player.getBoundingClientRect().left) {
         moveLeft(player)
-        moveCoin.play()
       } else if (e.clientX > player.getBoundingClientRect().right) {
         moveRight(player)
-        moveCoin.play()
       }
     }
   })
@@ -150,7 +153,6 @@ for (var i = 0; i < clickToDrop.length; i++) {
   clickToDrop[i].addEventListener('click', function (e) {
     if (e.target.nodeName === 'IMG') {
       dropCoin(player, coin)
-      coinDrop.play()
     }
   })
 }
@@ -173,13 +175,11 @@ function getKeyAndMove(e) {
   switch (key_code) {
     case 37: //left arrow key
       moveLeft(player)
-      moveCoin.play()
       break;
     case 38: //Up arrow key
       break;
     case 39: //right arrow key
       moveRight(player)
-      moveCoin.play();
       break;
     case 40: //down arrow key
       dropCoin(player, coin)
@@ -188,6 +188,7 @@ function getKeyAndMove(e) {
 }
 
 function moveLeft(obj) {
+  moveCoin.play()
   removeTarget()
   if (obj.parentNode.previousElementSibling) {
     obj.parentNode.previousElementSibling.appendChild(obj)
@@ -197,6 +198,7 @@ function moveLeft(obj) {
 }
 
 function moveRight(obj) {
+  moveCoin.play()
   removeTarget()
   if (obj.parentNode.nextElementSibling) {
     obj.parentNode.nextElementSibling.appendChild(obj)
@@ -206,6 +208,13 @@ function moveRight(obj) {
 }
 
 //resetGame
+function resetGame(modalObj, time) {
+  playerOneCount = 0
+  playerTwoCount = 0
+  modalMgmt(modalObj)
+  startGame(time)
+}
+
 var modal = document.querySelector('.modal')
 var modalUsername = document.querySelector('.modal-username')
 var modalType1 = document.querySelector('.modal-type1')
@@ -262,12 +271,6 @@ pauseBtnLand.addEventListener('click', function () {
   type1Msg2.textContent = 'Please take your time!'
   playAgainBtn.textContent = 'Resume'
 })
-function resetGame(modalObj, time) {
-  playerOneCount = 0
-  playerTwoCount = 0
-  modalMgmt(modalObj)
-  startGame(time)
-}
 
 // Restart game totally by new game Btn
 // var newGameBtn = document.querySelector('.new-game-btn')
@@ -286,13 +289,25 @@ function startOver() {
   clearScoreFields()
 }
 
+function addDropCoinAnimation(obj) {
+  obj.classList.add('coin-drop-animation')
+  return obj
+}
+
+function removeDropCoinAnimation(obj) {
+  obj.classList.remove('coin-drop-animation')
+  return obj
+}
+
 var isWin = false
 
 function dropCoin(obj, coin) {
+  obj = addDropCoinAnimation(obj)
+  coinDrop.play()
   indicateTimePort.textContent = '0: 10'
   indicateTimeLand.textContent = '0: 10'
   currentLocationID = obj.parentNode.id
-  var currentCol = obj.parentNode.id[4]
+  var currentCol = currentLocationID[4]
   var target
   if (document.getElementById('r1-c' + currentCol).childNodes.length === 1) {
     setTimeout(function () {
@@ -322,8 +337,8 @@ function dropCoin(obj, coin) {
       }
     }
     if(!isWin) {
-      switchPlayer()
-      displayTarget()
+      switchPlayer(obj)
+      // displayTarget()
     }
   }
 }
@@ -574,7 +589,7 @@ var indicateTimePort = document.querySelector('.time-left-port')
 var indicateTimeLand = document.querySelector('.time-left-land')
 var interval
 
-function timer(time) {
+function timer(obj, time) {
   timeLeft = time
   clearInterval(interval)
   interval = setInterval(function () {
@@ -593,7 +608,7 @@ function timer(time) {
       indicateTimePort.textContent = 'Time Out!'
       indicateTimeLand.textContent = 'Time Out!'
       alertSound.play()
-      switchPlayer()
+      switchPlayer(obj)
     }
     timeLeft--
   }, 1000)
@@ -677,20 +692,24 @@ function startGame(time) {
 
   coinLocation = firstCoinLocation
   currentLocationID = 'r0-c4'
+  var playerCoinObj
   if (currentPlayer === 'one') {
     userNameOnePort.style.color = 'gold'
     userNameTwoPort.style.color = 'white'
     userNameOneLand.style.color = 'gold'
     userNameTwoLand.style.color = 'white'
     coinLocation.appendChild(playerOneCoinObj)
+    playerCoinObj = playerOneCoinObj
   } else if (currentPlayer === 'two') {
     userNameOnePort.style.color = 'white'
     userNameTwoPort.style.color = 'gold'
     userNameOneLand.style.color = 'white'
     userNameTwoLand.style.color = 'gold'
     coinLocation.appendChild(playerTwoCoinObj)
+    playerCoinObj = playerTwoCoinObj
   }
+  playerCoinObj = removeDropCoinAnimation(playerCoinObj)
   displayTarget()
   addKeydownEvent()
-  timer(time)
+  timer(playerCoinObj, time)
 }
