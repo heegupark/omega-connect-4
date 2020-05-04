@@ -33,6 +33,12 @@ var playerTwoAnswerArr = [[], [], [], [], [], []]
 var playerOneScore = 0
 var playerTwoScore = 0
 
+// Time for dropping coin
+var dropCoinTime = 1000
+
+// Time for showing alert(timer, switch player)
+var alertMsgTime = 1000
+
 // Create a coin
 function createCoin(coin) {
   var coinObj = document.createElement('IMG')
@@ -44,33 +50,35 @@ function createCoin(coin) {
 // switch users
 function switchPlayer(obj) {
   var nextPlayer = ''
+  removeAllEvents()
 
-  if (currentPlayer === 'one') {
-    currentPlayer = 'two'
-    userNameOnePort.style.color = 'white'
-    userNameTwoPort.style.color = 'gold'
-    userNameOneLand.style.color = 'white'
-    userNameTwoLand.style.color = 'gold'
-    nextPlayer = playerTwo.value
-  } else {
-    currentPlayer = 'one'
-    userNameOnePort.style.color = 'gold'
-    userNameTwoPort.style.color = 'white'
-    userNameOneLand.style.color = 'white'
-    userNameTwoLand.style.color = 'gold'
-    nextPlayer = playerOne.value
-  }
+  coinLocation = document.getElementById(currentLocationID)
 
   // Display player's turn
-  removeKeydownEvent()
-
   setTimeout(function() {
     modalMgmt(modalType1)
-    type1Msg1.textContent = nextPlayer + '"' + 's turn'
+
+    if (currentPlayer === 'one') {
+      currentPlayer = 'two'
+      userNameOnePort.style.color = 'white'
+      userNameTwoPort.style.color = 'gold'
+      userNameOneLand.style.color = 'white'
+      userNameTwoLand.style.color = 'gold'
+      nextPlayer = playerTwo.value
+    } else {
+      currentPlayer = 'one'
+      userNameOnePort.style.color = 'gold'
+      userNameTwoPort.style.color = 'white'
+      userNameOneLand.style.color = 'white'
+      userNameTwoLand.style.color = 'gold'
+      nextPlayer = playerOne.value
+    }
+
+    type1Msg1.textContent = nextPlayer + "'" + 's turn'
     type1Msg2.textContent = ''
     playAgainBtn.style.display = 'none'
 
-    document.getElementById(currentLocationID).removeChild(player)
+    coinLocation.removeChild(player)
 
     if (currentPlayer === 'one') {
       player = playerOneCoinObj
@@ -79,30 +87,35 @@ function switchPlayer(obj) {
       player = playerTwoCoinObj
       coin = playerTwoCoin
     }
-
-    coinLocation = document.getElementById(currentLocationID)
     coinLocation.appendChild(player)
+
+    player.style.display = 'none'
     timeLeft = 10
 
     setTimeout(function () {
+
       modalMgmt(null)
       playAgainBtn.style.display = 'inline'
-      addKeydownEvent()
-      obj = removeDropCoinAnimation(obj)
+
+      player.style.display = 'block'
+
+      removeDropCoinAnimation(player)
       displayTarget()
-    }, 500)
-  },250)
+      addAllEvents()
+    }, alertMsgTime)
+
+  }, dropCoinTime)
 }
 
 // Show destination spot
+var targetObj
 function displayTarget() {
-  var target
   if (document.getElementById('r1-c' + currentLocationID[4]).childNodes.length !== 1) {
     for (var i = rows - 1; i >= 0; i--) {
-      target = document.getElementById('r' + (i + 1) + '-c' + currentLocationID[4])
-      if (target.childNodes.length === 0) {
+      targetObj = document.getElementById('r' + (i + 1) + '-c' + currentLocationID[4])
+      if (targetObj.childNodes.length === 0) {
         // target.style.backgroundColor = 'gold'
-        target.style.backgroundColor = 'rgb(249,215,73,0.9)'
+        targetObj.style.backgroundColor = 'rgb(249,215,73,0.9)'
         break
       }
     }
@@ -125,36 +138,79 @@ function removeTarget() {
 
 // Move coin by mouseover
 var clickToMove = document.querySelectorAll('.to-move')
-for (var i = 0; i < clickToMove.length; i++) {
-  clickToMove[i].addEventListener('mouseover', function (e) {
-    if (e.target.nodeName !== 'IMG') {
-      if (e.clientX < player.getBoundingClientRect().left) {
-        moveLeft(player)
-      } else if (e.clientX > player.getBoundingClientRect().right) {
-        moveRight(player)
-      }
-    }
-  })
 
-  clickToMove[i].addEventListener('click', function (e) {
-    if (e.target.nodeName !== 'IMG') {
-      if (e.clientX < player.getBoundingClientRect().left) {
-        moveLeft(player)
-      } else if (e.clientX > player.getBoundingClientRect().right) {
-        moveRight(player)
-      }
+var moveHandler = function moveEvent(e) {
+  if (e.target.nodeName !== 'IMG') {
+    if (e.clientX < player.getBoundingClientRect().left) {
+      moveLeft(player)
+    } else if (e.clientX > player.getBoundingClientRect().right) {
+      moveRight(player)
     }
-  })
+  }
+}
+
+function addAllEvents() {
+  for (var i = 0; i < clickToMove.length; i++) {
+    addSingleMouseOvertoMoveEvent(clickToMove[i])
+    addSingleClicktoMoveEvent(clickToMove[i])
+  }
+
+  addAllClickToDropEvent()
+  addKeydownEvent()
+}
+
+function removeAllEvents() {
+  for (var i = 0; i < clickToMove.length; i++) {
+    removeSingleMouseOvertoMoveEvent(clickToMove[i])
+    removeSingleClicktoMoveEvent(clickToMove[i])
+  }
+
+  removeAllClickToDropEvent()
+  removeKeydownEvent()
+}
+
+function addSingleMouseOvertoMoveEvent(obj) {
+  obj.addEventListener('mouseover', moveHandler)
+}
+
+function addSingleClicktoMoveEvent(obj) {
+  obj.addEventListener('click', moveHandler)
+}
+
+function removeSingleMouseOvertoMoveEvent(obj) {
+  obj.removeEventListener('mouseover', moveHandler)
+}
+
+function removeSingleClicktoMoveEvent(obj) {
+  obj.removeEventListener('click', moveHandler)
 }
 
 // Click to drop
 var clickToDrop = document.querySelectorAll('.on-hold-blocks')
-for (var i = 0; i < clickToDrop.length; i++) {
-  clickToDrop[i].addEventListener('click', function (e) {
-    if (e.target.nodeName === 'IMG') {
-      dropCoin(player, coin)
-    }
-  })
+var clickToDropHandler = function clickToDropFunction(e) {
+  if (e.target.nodeName === 'IMG') {
+    dropCoin(player, coin)
+  }
+}
+
+function addAllClickToDropEvent() {
+  for (var i = 0; i < clickToDrop.length; i++) {
+    addSingleClickToDropEvent(clickToDrop[i])
+  }
+}
+
+function removeAllClickToDropEvent() {
+  for (var i = 0; i < clickToDrop.length; i++) {
+    removeSingleClickToDropEvent(clickToDrop[i])
+  }
+}
+
+function addSingleClickToDropEvent(obj) {
+  obj.addEventListener('click', clickToDropHandler)
+}
+
+function removeSingleClickToDropEvent(obj) {
+  obj.removeEventListener('click', clickToDropHandler)
 }
 
 // Move the coin with arrow keys just in case
@@ -241,6 +297,7 @@ newGameBtnPort.addEventListener('click', function () {
   modalMgmt(modalType1)
   type1Msg1.textContent = 'Do you want to play again?'
   type1Msg2.textContent = ''
+  playAgainBtn.textContent = 'Play'
   timeLeft = 10
 })
 pauseBtnPort.addEventListener('click', function () {
@@ -259,7 +316,9 @@ newGameBtnLand.addEventListener('click', function () {
   indicateTimeLand.textContent = 'Time Left'
   removeKeydownEvent()
   modalMgmt(modalType1)
-  type1Msg1.textContent = 'Do you want to play again?'
+  type1Msg1.textContent = 'Do you want to play new game?'
+  type1Msg2.textContent = ''
+  playAgainBtn.textContent = 'Play'
   timeLeft = 10
 })
 pauseBtnLand.addEventListener('click', function () {
@@ -289,26 +348,66 @@ function startOver() {
   clearScoreFields()
 }
 
+// var transformForCoin = 720
+// var transformForCoin = Math.floor(Math.random(0,1)*360)
 function addDropCoinAnimation(obj) {
-  obj.classList.add('coin-drop-animation')
+  switch (targetObj.id[1]) {
+    case '6':
+      obj.classList.add('coin-drop-animation-row6')
+      // transformForCoin = 360
+      dropCoinTime = 1000
+      break
+    case '5':
+      obj.classList.add('coin-drop-animation-row5')
+      // transformForCoin = 300
+      dropCoinTime = 800
+      break
+    case '4':
+      obj.classList.add('coin-drop-animation-row4')
+      // transformForCoin = 240
+      dropCoinTime = 650
+      break
+    case '3':
+      obj.classList.add('coin-drop-animation-row3')
+      // transformForCoin = 180
+      dropCoinTime = 500
+      break
+    case '2':
+      obj.classList.add('coin-drop-animation-row2')
+      // transformForCoin = 120
+      dropCoinTime = 350
+      break
+    case '1':
+      obj.classList.add('coin-drop-animation-row1')
+      // transformForCoin = 60
+      dropCoinTime = 200
+      break
+  }
   return obj
 }
 
 function removeDropCoinAnimation(obj) {
-  obj.classList.remove('coin-drop-animation')
-  return obj
+  obj.classList.remove('coin-drop-animation-row6')
+  obj.classList.remove('coin-drop-animation-row5')
+  obj.classList.remove('coin-drop-animation-row4')
+  obj.classList.remove('coin-drop-animation-row3')
+  obj.classList.remove('coin-drop-animation-row2')
+  obj.classList.remove('coin-drop-animation-row1')
 }
 
 var isWin = false
 
 function dropCoin(obj, coin) {
-  obj = addDropCoinAnimation(obj)
   coinDrop.play()
+
   indicateTimePort.textContent = '0: 10'
   indicateTimeLand.textContent = '0: 10'
+
   currentLocationID = obj.parentNode.id
+
   var currentCol = currentLocationID[4]
   var target
+
   if (document.getElementById('r1-c' + currentCol).childNodes.length === 1) {
     setTimeout(function () {
       // indicateTimePort.textContent = ''
@@ -318,10 +417,17 @@ function dropCoin(obj, coin) {
     indicateTimeLand.textContent = 'No More Drop!'
     alertSound.play();
   } else {
+    obj = addDropCoinAnimation(obj)
     for (var i = rows - 1; i >= 0; i--) {
       target = document.getElementById('r' + (i + 1) + '-c' + currentCol)
       if (target.childNodes.length === 0) {
-        target.appendChild(createCoin(coin))
+        setTimeout(function() {
+          // createCoin(coin).style.transform = 'rotate(600deg)'
+          var tempCoin = createCoin(coin)
+          var transformForCoin = Math.floor(Math.random(0,1)*360)
+          tempCoin.style.transform = 'rotate('+transformForCoin+'deg)'
+          target.appendChild(tempCoin)
+        }, dropCoinTime)
         coinDrop.play()
         target.style.backgroundColor = ''
         if (currentPlayer === 'one') {
@@ -402,7 +508,7 @@ function checkWinCondition(currentPlayer, row, col) {
         clearInterval(interval)
         indicateTimePort.textContent = 'Time Left'
         indicateTimeLand.textContent = 'Time Left'
-        removeKeydownEvent()
+        removeAllEvents()
         return true
         break
       }
@@ -423,7 +529,7 @@ function checkWinCondition(currentPlayer, row, col) {
           clearInterval(interval)
           indicateTimePort.textContent = 'Time Left'
           indicateTimeLand.textContent = 'Time Left'
-          removeKeydownEvent()
+          removeAllEvents()
           return true
           break
         }
@@ -446,7 +552,7 @@ function checkWinCondition(currentPlayer, row, col) {
           clearInterval(interval)
           indicateTimePort.textContent = 'Time Left'
           indicateTimeLand.textContent = 'Time Left'
-          removeKeydownEvent()
+          removeAllEvents()
           return true
           break
         }
@@ -468,7 +574,7 @@ function checkWinCondition(currentPlayer, row, col) {
           clearInterval(interval)
           indicateTimePort.textContent = 'Time Left'
           indicateTimeLand.textContent = 'Time Left'
-          removeKeydownEvent()
+          removeAllEvents()
           return true
           break
         }
@@ -598,13 +704,15 @@ function timer(obj, time) {
     } else {
       seconds = timeLeft % 60;
     }
+
     indicateTimePort.textContent = '0: ' + seconds;
     indicateTimeLand.textContent = '0: ' + seconds;
-    if (timeLeft <= 0) {
+
+    if (timeLeft === 0) {
       setTimeout(function () {
         // indicateTimePort.textContent = ' '
         // indicateTimeLand.textContent = ' '
-      }, 600)
+      }, alertMsgTime)
       indicateTimePort.textContent = 'Time Out!'
       indicateTimeLand.textContent = 'Time Out!'
       alertSound.play()
@@ -692,6 +800,7 @@ function startGame(time) {
 
   coinLocation = firstCoinLocation
   currentLocationID = 'r0-c4'
+
   var playerCoinObj
   if (currentPlayer === 'one') {
     userNameOnePort.style.color = 'gold'
@@ -700,7 +809,7 @@ function startGame(time) {
     userNameTwoLand.style.color = 'white'
     coinLocation.appendChild(playerOneCoinObj)
     playerCoinObj = playerOneCoinObj
-  } else if (currentPlayer === 'two') {
+  } else {
     userNameOnePort.style.color = 'white'
     userNameTwoPort.style.color = 'gold'
     userNameOneLand.style.color = 'white'
@@ -708,8 +817,10 @@ function startGame(time) {
     coinLocation.appendChild(playerTwoCoinObj)
     playerCoinObj = playerTwoCoinObj
   }
+
   playerCoinObj = removeDropCoinAnimation(playerCoinObj)
+
   displayTarget()
-  addKeydownEvent()
+  addAllEvents()
   timer(playerCoinObj, time)
 }
