@@ -39,6 +39,12 @@ var dropCoinTime = 1000
 // Time for showing alert(timer, switch player)
 var alertMsgTime = 1000
 
+// Time for displaying the winner
+var winDisplayTime = 1500
+
+// Time for highlighting the four coins that make the win
+var highlightCoinstime = 1000
+
 // Create a coin
 function createCoin(coin) {
   var coinObj = document.createElement('IMG')
@@ -398,6 +404,7 @@ function removeDropCoinAnimation(obj) {
 var isWin = false
 
 function dropCoin(obj, coin) {
+  removeAllEvents()
   coinDrop.play()
 
   indicateTimePort.textContent = '0: 10'
@@ -451,28 +458,30 @@ function dropCoin(obj, coin) {
 
 // Highlight four coins that made the win
 function highlightFourCoins(type, row, col) {
-  switch (type) {
-    case '4row':
-      for (var i = 0; i < 4; i++) {
-        highlightCoin(row + 1, col + i + 1)
-      }
-      break
-    case '4col':
-      for (var i = 0; i < 4; i++) {
-        highlightCoin(row + i + 1, col + 1)
-      }
-      break
-    case '4diag-asc':
-      for (var i = 0; i < 4; i++) {
-        highlightCoin(row + 1 - i, col + 1 + i)
-      }
-      break
-    case '4diag-des':
-      for (var i = 0; i < 4; i++) {
-        highlightCoin(row + 1 + i, col + 1 + i)
-      }
-      break
-  }
+  setTimeout(function() {
+    switch (type) {
+      case '4row':
+        for (var i = 0; i < 4; i++) {
+          highlightCoin(row + 1, col + i + 1)
+        }
+        break
+      case '4col':
+        for (var i = 0; i < 4; i++) {
+          highlightCoin(row + i + 1, col + 1)
+        }
+        break
+      case '4diag-asc':
+        for (var i = 0; i < 4; i++) {
+          highlightCoin(row + 1 - i, col + 1 + i)
+        }
+        break
+      case '4diag-des':
+        for (var i = 0; i < 4; i++) {
+          highlightCoin(row + 1 + i, col + 1 + i)
+        }
+        break
+    }
+  }, highlightCoinstime)
 }
 
 // Way of highlight the four coins which make the win
@@ -508,7 +517,6 @@ function checkWinCondition(currentPlayer, row, col) {
         clearInterval(interval)
         indicateTimePort.textContent = 'Time Left'
         indicateTimeLand.textContent = 'Time Left'
-        removeAllEvents()
         return true
         break
       }
@@ -529,7 +537,6 @@ function checkWinCondition(currentPlayer, row, col) {
           clearInterval(interval)
           indicateTimePort.textContent = 'Time Left'
           indicateTimeLand.textContent = 'Time Left'
-          removeAllEvents()
           return true
           break
         }
@@ -552,7 +559,6 @@ function checkWinCondition(currentPlayer, row, col) {
           clearInterval(interval)
           indicateTimePort.textContent = 'Time Left'
           indicateTimeLand.textContent = 'Time Left'
-          removeAllEvents()
           return true
           break
         }
@@ -574,7 +580,6 @@ function checkWinCondition(currentPlayer, row, col) {
           clearInterval(interval)
           indicateTimePort.textContent = 'Time Left'
           indicateTimeLand.textContent = 'Time Left'
-          removeAllEvents()
           return true
           break
         }
@@ -639,15 +644,17 @@ function score(player) {
 
 // Display score after win condition happened
 function displayWinner(player) {
-  modalMgmt(modalType1)
-  timeLeft = 10
-  if (player === 'one') {
-    type1Msg1.textContent = 'Congratulations, ' + playerOne.value+ '!'
-    type1Msg2.textContent = ' You won!'
-  } else if (player === 'two') {
-    type1Msg1.textContent = 'Congratulations, ' + playerTwo.value + '!'
-    type1Msg2.textContent = ' You won!'
-  }
+  setTimeout(function() {
+    modalMgmt(modalType1)
+    timeLeft = 10
+    if (player === 'one') {
+      type1Msg1.textContent = 'Congratulations, ' + playerOne.value + '!'
+      type1Msg2.textContent = ' You won!'
+    } else if (player === 'two') {
+      type1Msg1.textContent = 'Congratulations, ' + playerTwo.value + '!'
+      type1Msg2.textContent = ' You won!'
+    }
+  }, winDisplayTime)
 }
 
 // Clear Score
