@@ -567,7 +567,12 @@ function checkWinCondition(currentPlayer, row, col) {
 
     // descending
     for (var k = 0; k < rows - 3; k++) {
-      for (var l = 0; l < rows - 3; l++) {
+      for (var l = 0; l <= rows - 3; l++) {
+        console.log(rows)
+        console.log(currentPlayerAnswerArr)
+        console.log('k=',k)
+        console.log('l=',l)
+        console.log(currentPlayerAnswerArr[k][l])
         if (currentPlayerAnswerArr[k][l] === 1 &&
           currentPlayerAnswerArr[k + 1][l + 1] === 1 &&
           currentPlayerAnswerArr[k + 2][l + 2] === 1 &&
