@@ -1,8 +1,6 @@
 html {
   font-family: 'Baloo Bhaina 2', cursive;
   line-height: 1.5rem;
-  background-color: black;
-  background-image: url('../img/omega-nebula.jpg');
   border: 1px solid gold;
 }
 
@@ -13,7 +11,7 @@ body {
   text-align: center;
   font-size: 16px;
   min-height: 99.7vh;
-  background-color: rgb(0,0,0,0.9);
+  background-color: rgb(0,0,0,0.95);
   color: white;
 }
 
