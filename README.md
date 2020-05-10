@@ -29,6 +29,12 @@
 ## Screen shot
 [Desktop - Chrome browser]
 
+![Omega Connect 4](https://github.com/heegupark/omega-connect-4/blob/master/oc4-ss-001.gif)
+
 [iPhone 6/7/8 - Portrait]
 
+![Omega Connect 4](https://github.com/heegupark/omega-connect-4/blob/master/oc4-ss-002.gif)
+
 [iPhone 6/7/8 - Landscape]
+
+![Omega Connect 4](https://github.com/heegupark/omega-connect-4/blob/master/oc4-ss-003.gif)
