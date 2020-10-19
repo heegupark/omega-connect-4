@@ -1,128 +1,137 @@
-var coins = ['coin1.png', 'coin2.png', 'coin3.png', 'coin4.png', 'coin5.png', 'coin6.png', 'coin7.png']
+var coins = [
+  "coin1.png",
+  "coin2.png",
+  "coin3.png",
+  "coin4.png",
+  "coin5.png",
+  "coin6.png",
+  "coin7.png",
+];
 
 // Number of rows, cols
-var rows = 6
-var cols = 7
+var rows = 6;
+var cols = 7;
 
 // Select a random coin
-var playerOneCoin = coins[Math.floor(Math.random(coins.length) * coins.length)]
-coins.splice(coins.indexOf(playerOneCoin), 1) // to avoid same image
-var playerTwoCoin = coins[Math.floor(Math.random(coins.length) * coins.length)]
+var playerOneCoin = coins[Math.floor(Math.random(coins.length) * coins.length)];
+coins.splice(coins.indexOf(playerOneCoin), 1); // to avoid same image
+var playerTwoCoin = coins[Math.floor(Math.random(coins.length) * coins.length)];
 
 // Place a coin
-var currentLocationID = 'r0-c4'
-var firstCoinLocation = document.getElementById(currentLocationID)
+var currentLocationID = "r0-c4";
+var firstCoinLocation = document.getElementById(currentLocationID);
 
-var coinLocation = firstCoinLocation
+var coinLocation = firstCoinLocation;
 
-var playerOneCoinObj = createCoin(playerOneCoin)
-var playerTwoCoinObj = createCoin(playerTwoCoin)
-// coinLocation.appendChild(playerOneCoinObj)
+var playerOneCoinObj = createCoin(playerOneCoin);
+var playerTwoCoinObj = createCoin(playerTwoCoin);
 
-var currentPlayer = 'one'
-var player = playerOneCoinObj
-var coin = playerOneCoin
+var currentPlayer = "one";
+var player = playerOneCoinObj;
+var coin = playerOneCoin;
 
 // for win condition
-var playerOneCount = 0
-var playerTwoCount = 0
-var playerOneAnswerArr = [[], [], [], [], [], []]
-var playerTwoAnswerArr = [[], [], [], [], [], []]
+var playerOneCount = 0;
+var playerTwoCount = 0;
+var playerOneAnswerArr = [[], [], [], [], [], []];
+var playerTwoAnswerArr = [[], [], [], [], [], []];
 
 // Score
-var playerOneScore = 0
-var playerTwoScore = 0
+var playerOneScore = 0;
+var playerTwoScore = 0;
 
 // Time for dropping coin
-var dropCoinTime = 1000
+var dropCoinTime = 1000;
 
 // Time for showing alert(timer, switch player)
-var alertMsgTime = 1000
+var alertMsgTime = 1000;
 
 // Time for displaying the winner
-var winDisplayTime = 1500
+var winDisplayTime = 1500;
 
 // Time for highlighting the four coins that make the win
-var highlightCoinstime = 1000
+var highlightCoinstime = 1000;
 
 // Create a coin
 function createCoin(coin) {
-  var coinObj = document.createElement('IMG')
-  coinObj.setAttribute('src', 'img/' + coin)
-  coinObj.classList.add('coin')
-  return coinObj
+  var coinObj = document.createElement("IMG");
+  coinObj.setAttribute("src", "img/" + coin);
+  coinObj.classList.add("coin");
+  return coinObj;
 }
 
 // switch users
 function switchPlayer(obj) {
-  var nextPlayer = ''
-  removeAllEvents()
+  var nextPlayer = "";
+  removeAllEvents();
 
-  coinLocation = document.getElementById(currentLocationID)
+  coinLocation = document.getElementById(currentLocationID);
 
   // Display player's turn
-  setTimeout(function() {
-    modalMgmt(modalType1)
+  setTimeout(function () {
+    modalMgmt(modalType1);
 
-    if (currentPlayer === 'one') {
-      currentPlayer = 'two'
-      userNameOnePort.style.color = 'white'
-      userNameTwoPort.style.color = 'gold'
-      userNameOneLand.style.color = 'white'
-      userNameTwoLand.style.color = 'gold'
-      nextPlayer = playerTwo.value
+    if (currentPlayer === "one") {
+      currentPlayer = "two";
+      userNameOnePort.style.color = "white";
+      userNameTwoPort.style.color = "gold";
+      userNameOneLand.style.color = "white";
+      userNameTwoLand.style.color = "gold";
+      nextPlayer = playerTwo.value;
     } else {
-      currentPlayer = 'one'
-      userNameOnePort.style.color = 'gold'
-      userNameTwoPort.style.color = 'white'
-      userNameOneLand.style.color = 'white'
-      userNameTwoLand.style.color = 'gold'
-      nextPlayer = playerOne.value
+      currentPlayer = "one";
+      userNameOnePort.style.color = "gold";
+      userNameTwoPort.style.color = "white";
+      userNameOneLand.style.color = "white";
+      userNameTwoLand.style.color = "gold";
+      nextPlayer = playerOne.value;
     }
 
-    type1Msg1.textContent = nextPlayer + "'" + 's turn'
-    type1Msg2.textContent = ''
-    playAgainBtn.style.display = 'none'
+    type1Msg1.textContent = nextPlayer + "'" + "s turn";
+    type1Msg2.textContent = "";
+    playAgainBtn.style.display = "none";
 
-    coinLocation.removeChild(player)
+    coinLocation.removeChild(player);
 
-    if (currentPlayer === 'one') {
-      player = playerOneCoinObj
-      coin = playerOneCoin
+    if (currentPlayer === "one") {
+      player = playerOneCoinObj;
+      coin = playerOneCoin;
     } else {
-      player = playerTwoCoinObj
-      coin = playerTwoCoin
+      player = playerTwoCoinObj;
+      coin = playerTwoCoin;
     }
-    coinLocation.appendChild(player)
+    coinLocation.appendChild(player);
 
-    player.style.display = 'none'
-    timeLeft = 10
+    player.style.display = "none";
+    timeLeft = 10;
 
     setTimeout(function () {
+      modalMgmt(null);
+      playAgainBtn.style.display = "inline";
 
-      modalMgmt(null)
-      playAgainBtn.style.display = 'inline'
+      player.style.display = "block";
 
-      player.style.display = 'block'
-
-      removeDropCoinAnimation(player)
-      displayTarget()
-      addAllEvents()
-    }, alertMsgTime)
-
-  }, dropCoinTime)
+      removeDropCoinAnimation(player);
+      displayTarget();
+      addAllEvents();
+    }, alertMsgTime);
+  }, dropCoinTime);
 }
 
 // Show destination spot
-var targetObj
+var targetObj;
 function displayTarget() {
-  if (document.getElementById('r1-c' + currentLocationID[4]).childNodes.length !== 1) {
+  if (
+    document.getElementById("r1-c" + currentLocationID[4]).childNodes.length !==
+    1
+  ) {
     for (var i = rows - 1; i >= 0; i--) {
-      targetObj = document.getElementById('r' + (i + 1) + '-c' + currentLocationID[4])
+      targetObj = document.getElementById(
+        "r" + (i + 1) + "-c" + currentLocationID[4]
+      );
       if (targetObj.childNodes.length === 0) {
-        // target.style.backgroundColor = 'gold'
-        targetObj.style.backgroundColor = 'rgb(249,215,73,0.9)'
-        break
+        targetObj.style.backgroundColor = "rgb(249,215,73,0.9)";
+        break;
       }
     }
   }
@@ -130,327 +139,319 @@ function displayTarget() {
 
 // Remove destination spot
 function removeTarget() {
-  var target
-  if (document.getElementById('r1-c' + currentLocationID[4]).childNodes.length !== 1) {
+  var target;
+  if (
+    document.getElementById("r1-c" + currentLocationID[4]).childNodes.length !==
+    1
+  ) {
     for (var i = rows - 1; i >= 0; i--) {
-      target = document.getElementById('r' + (i + 1) + '-c' + currentLocationID[4])
+      target = document.getElementById(
+        "r" + (i + 1) + "-c" + currentLocationID[4]
+      );
       if (target.childNodes.length === 0) {
-        target.style.backgroundColor = ''
-        break
+        target.style.backgroundColor = "";
+        break;
       }
     }
   }
 }
 
 // Move coin by mouseover
-var clickToMove = document.querySelectorAll('.to-move')
+var clickToMove = document.querySelectorAll(".to-move");
 
 var moveHandler = function moveEvent(e) {
-  if (e.target.nodeName !== 'IMG') {
+  if (e.target.nodeName !== "IMG") {
     if (e.clientX < player.getBoundingClientRect().left) {
-      moveLeft(player)
+      moveLeft(player);
     } else if (e.clientX > player.getBoundingClientRect().right) {
-      moveRight(player)
+      moveRight(player);
     }
   }
-}
+};
 
 function addAllEvents() {
   for (var i = 0; i < clickToMove.length; i++) {
-    addSingleMouseOvertoMoveEvent(clickToMove[i])
-    addSingleClicktoMoveEvent(clickToMove[i])
+    addSingleMouseOvertoMoveEvent(clickToMove[i]);
+    addSingleClicktoMoveEvent(clickToMove[i]);
   }
 
-  addAllClickToDropEvent()
-  addKeydownEvent()
+  addAllClickToDropEvent();
+  addKeydownEvent();
 }
 
 function removeAllEvents() {
   for (var i = 0; i < clickToMove.length; i++) {
-    removeSingleMouseOvertoMoveEvent(clickToMove[i])
-    removeSingleClicktoMoveEvent(clickToMove[i])
+    removeSingleMouseOvertoMoveEvent(clickToMove[i]);
+    removeSingleClicktoMoveEvent(clickToMove[i]);
   }
 
-  removeAllClickToDropEvent()
-  removeKeydownEvent()
+  removeAllClickToDropEvent();
+  removeKeydownEvent();
 }
 
 function addSingleMouseOvertoMoveEvent(obj) {
-  obj.addEventListener('mouseover', moveHandler)
+  obj.addEventListener("mouseover", moveHandler);
 }
 
 function addSingleClicktoMoveEvent(obj) {
-  obj.addEventListener('click', moveHandler)
+  obj.addEventListener("click", moveHandler);
 }
 
 function removeSingleMouseOvertoMoveEvent(obj) {
-  obj.removeEventListener('mouseover', moveHandler)
+  obj.removeEventListener("mouseover", moveHandler);
 }
 
 function removeSingleClicktoMoveEvent(obj) {
-  obj.removeEventListener('click', moveHandler)
+  obj.removeEventListener("click", moveHandler);
 }
 
 // Click to drop
-var clickToDrop = document.querySelectorAll('.on-hold-blocks')
+var clickToDrop = document.querySelectorAll(".on-hold-blocks");
 var clickToDropHandler = function clickToDropFunction(e) {
-  if (e.target.nodeName === 'IMG') {
-    dropCoin(player, coin)
+  if (e.target.nodeName === "IMG") {
+    dropCoin(player, coin);
   }
-}
+};
 
 function addAllClickToDropEvent() {
   for (var i = 0; i < clickToDrop.length; i++) {
-    addSingleClickToDropEvent(clickToDrop[i])
+    addSingleClickToDropEvent(clickToDrop[i]);
   }
 }
 
 function removeAllClickToDropEvent() {
   for (var i = 0; i < clickToDrop.length; i++) {
-    removeSingleClickToDropEvent(clickToDrop[i])
+    removeSingleClickToDropEvent(clickToDrop[i]);
   }
 }
 
 function addSingleClickToDropEvent(obj) {
-  obj.addEventListener('click', clickToDropHandler)
+  obj.addEventListener("click", clickToDropHandler);
 }
 
 function removeSingleClickToDropEvent(obj) {
-  obj.removeEventListener('click', clickToDropHandler)
+  obj.removeEventListener("click", clickToDropHandler);
 }
 
 // Move the coin with arrow keys just in case
 function addKeydownEvent() {
   document.body.onkeydown = function (e) {
-    getKeyAndMove(e)
-  }
+    getKeyAndMove(e);
+  };
 }
 
 function removeKeydownEvent() {
   document.body.onkeydown = function (e) {
     // intentionally left this null
-  }
+  };
 }
 
 function getKeyAndMove(e) {
   var key_code = e.which || e.keyCode;
   switch (key_code) {
     case 37: //left arrow key
-      moveLeft(player)
+      moveLeft(player);
       break;
     case 38: //Up arrow key
       break;
     case 39: //right arrow key
-      moveRight(player)
+      moveRight(player);
       break;
     case 40: //down arrow key
-      dropCoin(player, coin)
+      dropCoin(player, coin);
       break;
   }
 }
 
 function moveLeft(obj) {
-  moveCoin.play()
-  removeTarget()
+  moveCoin.play();
+  removeTarget();
   if (obj.parentNode.previousElementSibling) {
-    obj.parentNode.previousElementSibling.appendChild(obj)
+    obj.parentNode.previousElementSibling.appendChild(obj);
   }
-  currentLocationID = obj.parentNode.id
-  displayTarget()
+  currentLocationID = obj.parentNode.id;
+  displayTarget();
 }
 
 function moveRight(obj) {
-  moveCoin.play()
-  removeTarget()
+  moveCoin.play();
+  removeTarget();
   if (obj.parentNode.nextElementSibling) {
-    obj.parentNode.nextElementSibling.appendChild(obj)
+    obj.parentNode.nextElementSibling.appendChild(obj);
   }
-  currentLocationID = obj.parentNode.id
-  displayTarget()
+  currentLocationID = obj.parentNode.id;
+  displayTarget();
 }
 
 //resetGame
 function resetGame(modalObj, time) {
-  playerOneCount = 0
-  playerTwoCount = 0
-  modalMgmt(modalObj)
-  startGame(time)
+  playerOneCount = 0;
+  playerTwoCount = 0;
+  modalMgmt(modalObj);
+  startGame(time);
 }
 
-var modal = document.querySelector('.modal')
-var modalUsername = document.querySelector('.modal-username')
-var modalType1 = document.querySelector('.modal-type1')
+var modal = document.querySelector(".modal");
+var modalUsername = document.querySelector(".modal-username");
+var modalType1 = document.querySelector(".modal-type1");
 
-var playAgainBtn = document.querySelector('.play-again')
-var pauseBtnPort = document.querySelector('.pause-btn-port')
-var newGameBtnPort = document.querySelector('.new-game-btn-port')
-var newGameBtnLand = document.querySelector('.new-game-btn-land')
-var pauseBtnLand = document.querySelector('.pause-btn-land')
+var playAgainBtn = document.querySelector(".play-again");
+var pauseBtnPort = document.querySelector(".pause-btn-port");
+var newGameBtnPort = document.querySelector(".new-game-btn-port");
+var newGameBtnLand = document.querySelector(".new-game-btn-land");
+var pauseBtnLand = document.querySelector(".pause-btn-land");
 
-var type1Msg1 = document.querySelector('.type1-msg1')
-var type1Msg2 = document.querySelector('.type1-msg2')
+var type1Msg1 = document.querySelector(".type1-msg1");
+var type1Msg2 = document.querySelector(".type1-msg2");
 
-playAgainBtn.addEventListener('click', function () {
-  clickSound.play()
-  resetGame(modalType1, timeLeft)
-})
-newGameBtnPort.addEventListener('click', function () {
-  clickSound.play()
-  clearInterval(interval)
-  indicateTimePort.textContent = 'Time Left'
-  indicateTimeLand.textContent = 'Time Left'
-  removeKeydownEvent()
-  modalMgmt(modalType1)
-  type1Msg1.textContent = 'Do you want to play again?'
-  type1Msg2.textContent = ''
-  playAgainBtn.textContent = 'Play'
-  timeLeft = 10
-})
-pauseBtnPort.addEventListener('click', function () {
-  clickSound.play()
-  clearInterval(interval)
-  removeKeydownEvent()
-  modalMgmt(modalType1)
-  type1Msg1.textContent = 'Paused!'
-  type1Msg2.textContent = 'Please take your time!'
-  playAgainBtn.textContent = 'Resume'
-})
-newGameBtnLand.addEventListener('click', function () {
-  clickSound.play()
-  clearInterval(interval)
-  indicateTimePort.textContent = 'Time Left'
-  indicateTimeLand.textContent = 'Time Left'
-  removeKeydownEvent()
-  modalMgmt(modalType1)
-  type1Msg1.textContent = 'Do you want to play new game?'
-  type1Msg2.textContent = ''
-  playAgainBtn.textContent = 'Play'
-  timeLeft = 10
-})
-pauseBtnLand.addEventListener('click', function () {
-  clickSound.play()
-  clearInterval(interval)
-  removeKeydownEvent()
-  modalMgmt(modalType1)
-  type1Msg1.textContent = 'Paused!'
-  type1Msg2.textContent = 'Please take your time!'
-  playAgainBtn.textContent = 'Resume'
-})
-
-// Restart game totally by new game Btn
-// var newGameBtn = document.querySelector('.new-game-btn')
-// newGameBtnPort.addEventListener("click", function() {
-//   clickSound.play()
-//   startOver
-// })
+playAgainBtn.addEventListener("click", function () {
+  clickSound.play();
+  resetGame(modalType1, timeLeft);
+});
+newGameBtnPort.addEventListener("click", function () {
+  clickSound.play();
+  clearInterval(interval);
+  indicateTimePort.textContent = "Time Left";
+  indicateTimeLand.textContent = "Time Left";
+  removeKeydownEvent();
+  modalMgmt(modalType1);
+  type1Msg1.textContent = "Do you want to play again?";
+  type1Msg2.textContent = "";
+  playAgainBtn.textContent = "Play";
+  timeLeft = 10;
+});
+pauseBtnPort.addEventListener("click", function () {
+  clickSound.play();
+  clearInterval(interval);
+  removeKeydownEvent();
+  modalMgmt(modalType1);
+  type1Msg1.textContent = "Paused!";
+  type1Msg2.textContent = "Please take your time!";
+  playAgainBtn.textContent = "Resume";
+});
+newGameBtnLand.addEventListener("click", function () {
+  clickSound.play();
+  clearInterval(interval);
+  indicateTimePort.textContent = "Time Left";
+  indicateTimeLand.textContent = "Time Left";
+  removeKeydownEvent();
+  modalMgmt(modalType1);
+  type1Msg1.textContent = "Do you want to play new game?";
+  type1Msg2.textContent = "";
+  playAgainBtn.textContent = "Play";
+  timeLeft = 10;
+});
+pauseBtnLand.addEventListener("click", function () {
+  clickSound.play();
+  clearInterval(interval);
+  removeKeydownEvent();
+  modalMgmt(modalType1);
+  type1Msg1.textContent = "Paused!";
+  type1Msg2.textContent = "Please take your time!";
+  playAgainBtn.textContent = "Resume";
 
 function startOver() {
-  playerOneCount = 0
-  playerTwoCount = 0
-  timeLeft = 10
-  clearInterval(interval)
-  indicateTimePort.textContent = 'Time Left'
-  indicateTimeLandt.textContent = 'Time Left'
-  clearScoreFields()
+  playerOneCount = 0;
+  playerTwoCount = 0;
+  timeLeft = 10;
+  clearInterval(interval);
+  indicateTimePort.textContent = "Time Left";
+  indicateTimeLandt.textContent = "Time Left";
+  clearScoreFields();
 }
 
 // var transformForCoin = 720
 // var transformForCoin = Math.floor(Math.random(0,1)*360)
 function addDropCoinAnimation(obj) {
   switch (targetObj.id[1]) {
-    case '6':
-      obj.classList.add('coin-drop-animation-row6')
+    case "6":
+      obj.classList.add("coin-drop-animation-row6");
       // transformForCoin = 360
-      dropCoinTime = 1000
-      break
-    case '5':
-      obj.classList.add('coin-drop-animation-row5')
+      dropCoinTime = 1000;
+      break;
+    case "5":
+      obj.classList.add("coin-drop-animation-row5");
       // transformForCoin = 300
-      dropCoinTime = 800
-      break
-    case '4':
-      obj.classList.add('coin-drop-animation-row4')
+      dropCoinTime = 800;
+      break;
+    case "4":
+      obj.classList.add("coin-drop-animation-row4");
       // transformForCoin = 240
-      dropCoinTime = 650
-      break
-    case '3':
-      obj.classList.add('coin-drop-animation-row3')
+      dropCoinTime = 650;
+      break;
+    case "3":
+      obj.classList.add("coin-drop-animation-row3");
       // transformForCoin = 180
-      dropCoinTime = 500
-      break
-    case '2':
-      obj.classList.add('coin-drop-animation-row2')
+      dropCoinTime = 500;
+      break;
+    case "2":
+      obj.classList.add("coin-drop-animation-row2");
       // transformForCoin = 120
-      dropCoinTime = 350
-      break
-    case '1':
-      obj.classList.add('coin-drop-animation-row1')
+      dropCoinTime = 350;
+      break;
+    case "1":
+      obj.classList.add("coin-drop-animation-row1");
       // transformForCoin = 60
-      dropCoinTime = 200
-      break
+      dropCoinTime = 200;
+      break;
   }
-  return obj
+  return obj;
 }
 
 function removeDropCoinAnimation(obj) {
-  obj.classList.remove('coin-drop-animation-row6')
-  obj.classList.remove('coin-drop-animation-row5')
-  obj.classList.remove('coin-drop-animation-row4')
-  obj.classList.remove('coin-drop-animation-row3')
-  obj.classList.remove('coin-drop-animation-row2')
-  obj.classList.remove('coin-drop-animation-row1')
+  obj.classList.remove("coin-drop-animation-row6");
+  obj.classList.remove("coin-drop-animation-row5");
+  obj.classList.remove("coin-drop-animation-row4");
+  obj.classList.remove("coin-drop-animation-row3");
+  obj.classList.remove("coin-drop-animation-row2");
+  obj.classList.remove("coin-drop-animation-row1");
 }
 
-var isWin = false
+var isWin = false;
 
 function dropCoin(obj, coin) {
-  removeAllEvents()
-  coinDrop.play()
+  removeAllEvents();
+  coinDrop.play();
 
-  indicateTimePort.textContent = '0: 10'
-  indicateTimeLand.textContent = '0: 10'
+  indicateTimePort.textContent = "0: 10";
+  indicateTimeLand.textContent = "0: 10";
 
-  currentLocationID = obj.parentNode.id
+  currentLocationID = obj.parentNode.id;
 
-  var currentCol = currentLocationID[4]
-  var target
+  var currentCol = currentLocationID[4];
+  var target;
 
-  if (document.getElementById('r1-c' + currentCol).childNodes.length === 1) {
-    setTimeout(function () {
-      // indicateTimePort.textContent = ''
-      // indicateTimeLand.textContent = ''
-    }, 500)
-    indicateTimePort.textContent = 'No More Drop!'
-    indicateTimeLand.textContent = 'No More Drop!'
+  if (document.getElementById("r1-c" + currentCol).childNodes.length === 1) {
+    indicateTimePort.textContent = "No More Drop!";
+    indicateTimeLand.textContent = "No More Drop!";
     alertSound.play();
   } else {
-    obj = addDropCoinAnimation(obj)
+    obj = addDropCoinAnimation(obj);
     for (var i = rows - 1; i >= 0; i--) {
-      target = document.getElementById('r' + (i + 1) + '-c' + currentCol)
+      target = document.getElementById("r" + (i + 1) + "-c" + currentCol);
       if (target.childNodes.length === 0) {
-        setTimeout(function() {
-          // createCoin(coin).style.transform = 'rotate(600deg)'
-          var tempCoin = createCoin(coin)
-          var transformForCoin = Math.floor(Math.random(0,1)*360)
-          tempCoin.style.transform = 'rotate('+transformForCoin+'deg)'
-          target.appendChild(tempCoin)
-        }, dropCoinTime)
-        coinDrop.play()
-        target.style.backgroundColor = ''
-        if (currentPlayer === 'one') {
-          playerOneAnswerArr[i][currentCol - 1] = 1
-          playerOneCount++
-        } else if (currentPlayer === 'two') {
-          playerTwoAnswerArr[i][currentCol - 1] = 1
-          playerTwoCount++
+        setTimeout(function () {
+          var tempCoin = createCoin(coin);
+          var transformForCoin = Math.floor(Math.random(0, 1) * 360);
+          tempCoin.style.transform = "rotate(" + transformForCoin + "deg)";
+          target.appendChild(tempCoin);
+        }, dropCoinTime);
+        coinDrop.play();
+        target.style.backgroundColor = "";
+        if (currentPlayer === "one") {
+          playerOneAnswerArr[i][currentCol - 1] = 1;
+          playerOneCount++;
+        } else if (currentPlayer === "two") {
+          playerTwoAnswerArr[i][currentCol - 1] = 1;
+          playerTwoCount++;
         }
-        isWin = checkWinCondition(currentPlayer, i, currentCol)
-        checkDraw()
-        break
+        isWin = checkWinCondition(currentPlayer, i, currentCol);
+        checkDraw();
+        break;
       }
     }
-    if(!isWin) {
-      switchPlayer(obj)
+    if (!isWin) {
+      switchPlayer(obj);
       // displayTarget()
     }
   }
@@ -458,87 +459,91 @@ function dropCoin(obj, coin) {
 
 // Highlight four coins that made the win
 function highlightFourCoins(type, row, col) {
-  setTimeout(function() {
+  setTimeout(function () {
     switch (type) {
-      case '4row':
+      case "4row":
         for (var i = 0; i < 4; i++) {
-          highlightCoin(row + 1, col + i + 1)
+          highlightCoin(row + 1, col + i + 1);
         }
-        break
-      case '4col':
+        break;
+      case "4col":
         for (var i = 0; i < 4; i++) {
-          highlightCoin(row + i + 1, col + 1)
+          highlightCoin(row + i + 1, col + 1);
         }
-        break
-      case '4diag-asc':
+        break;
+      case "4diag-asc":
         for (var i = 0; i < 4; i++) {
-          highlightCoin(row + 1 - i, col + 1 + i)
+          highlightCoin(row + 1 - i, col + 1 + i);
         }
-        break
-      case '4diag-des':
+        break;
+      case "4diag-des":
         for (var i = 0; i < 4; i++) {
-          highlightCoin(row + 1 + i, col + 1 + i)
+          highlightCoin(row + 1 + i, col + 1 + i);
         }
-        break
+        break;
     }
-  }, highlightCoinstime)
+  }, highlightCoinstime);
 }
 
 // Way of highlight the four coins which make the win
 function highlightCoin(row, col) {
-  document.getElementById('r' + row + '-c' + col).style.background = 'red'
+  document.getElementById("r" + row + "-c" + col).style.background = "red";
 }
 
 // Check win condition
 function checkWinCondition(currentPlayer, row, col) {
-  var currentCount = 0
-  var currentPlayerAnswerArr
-  if (currentPlayer === 'one') {
-    currentCount = playerOneCount
-    currentPlayerAnswerArr = playerOneAnswerArr
-  } else if (currentPlayer === 'two') {
-    currentCount = playerTwoCount
-    currentPlayerAnswerArr = playerTwoAnswerArr
+  var currentCount = 0;
+  var currentPlayerAnswerArr;
+  if (currentPlayer === "one") {
+    currentCount = playerOneCount;
+    currentPlayerAnswerArr = playerOneAnswerArr;
+  } else if (currentPlayer === "two") {
+    currentCount = playerTwoCount;
+    currentPlayerAnswerArr = playerTwoAnswerArr;
   }
 
   if (currentCount >= 4) {
     // 4 in a row check
-    var rowForCheck = Number(row)
+    var rowForCheck = Number(row);
     for (var i = 0; i < 4; i++) {
-      if (currentPlayerAnswerArr[rowForCheck][i] === 1 &&
+      if (
+        currentPlayerAnswerArr[rowForCheck][i] === 1 &&
         currentPlayerAnswerArr[rowForCheck][i + 1] === 1 &&
         currentPlayerAnswerArr[rowForCheck][i + 2] === 1 &&
-        currentPlayerAnswerArr[rowForCheck][i + 3] === 1) {
-        highlightFourCoins('4row', rowForCheck, i)
-        score(currentPlayer)
-        displayWinner(currentPlayer)
+        currentPlayerAnswerArr[rowForCheck][i + 3] === 1
+      ) {
+        highlightFourCoins("4row", rowForCheck, i);
+        score(currentPlayer);
+        displayWinner(currentPlayer);
         winSound.play();
-        timeLeft = 10
-        clearInterval(interval)
-        indicateTimePort.textContent = 'Time Left'
-        indicateTimeLand.textContent = 'Time Left'
-        return true
-        break
+        timeLeft = 10;
+        clearInterval(interval);
+        indicateTimePort.textContent = "Time Left";
+        indicateTimeLand.textContent = "Time Left";
+        return true;
+        break;
       }
     }
     // 4 in a col check
-    var colForCheck = Number(col) - 1
+    var colForCheck = Number(col) - 1;
     for (var j = 0; j < 4; j++) {
-      if (j + 1 < (cols - 1) && j + 2 < (cols - 1) && j + 3 < (cols - 1)) {
-        if (currentPlayerAnswerArr[j][colForCheck] === 1 &&
+      if (j + 1 < cols - 1 && j + 2 < cols - 1 && j + 3 < cols - 1) {
+        if (
+          currentPlayerAnswerArr[j][colForCheck] === 1 &&
           currentPlayerAnswerArr[j + 1][colForCheck] === 1 &&
           currentPlayerAnswerArr[j + 2][colForCheck] === 1 &&
-          currentPlayerAnswerArr[j + 3][colForCheck] === 1) {
-          highlightFourCoins('4col', j, colForCheck)
-          score(currentPlayer)
-          displayWinner(currentPlayer)
+          currentPlayerAnswerArr[j + 3][colForCheck] === 1
+        ) {
+          highlightFourCoins("4col", j, colForCheck);
+          score(currentPlayer);
+          displayWinner(currentPlayer);
           winSound.play();
-          timeLeft = 10
-          clearInterval(interval)
-          indicateTimePort.textContent = 'Time Left'
-          indicateTimeLand.textContent = 'Time Left'
-          return true
-          break
+          timeLeft = 10;
+          clearInterval(interval);
+          indicateTimePort.textContent = "Time Left";
+          indicateTimeLand.textContent = "Time Left";
+          return true;
+          break;
         }
       }
     }
@@ -547,20 +552,22 @@ function checkWinCondition(currentPlayer, row, col) {
     // acsending
     for (var k = rows - 1; k > rows - 4; k--) {
       for (var l = 0; l <= rows - 3; l++) {
-        if (currentPlayerAnswerArr[k][l] === 1 &&
+        if (
+          currentPlayerAnswerArr[k][l] === 1 &&
           currentPlayerAnswerArr[k - 1][l + 1] === 1 &&
           currentPlayerAnswerArr[k - 2][l + 2] === 1 &&
-          currentPlayerAnswerArr[k - 3][l + 3] === 1) {
-          highlightFourCoins('4diag-asc', k, l)
-          score(currentPlayer)
-          displayWinner(currentPlayer)
+          currentPlayerAnswerArr[k - 3][l + 3] === 1
+        ) {
+          highlightFourCoins("4diag-asc", k, l);
+          score(currentPlayer);
+          displayWinner(currentPlayer);
           winSound.play();
-          timeLeft = 10
-          clearInterval(interval)
-          indicateTimePort.textContent = 'Time Left'
-          indicateTimeLand.textContent = 'Time Left'
-          return true
-          break
+          timeLeft = 10;
+          clearInterval(interval);
+          indicateTimePort.textContent = "Time Left";
+          indicateTimeLand.textContent = "Time Left";
+          return true;
+          break;
         }
       }
     }
@@ -568,25 +575,27 @@ function checkWinCondition(currentPlayer, row, col) {
     // descending
     for (var k = 0; k < rows - 3; k++) {
       for (var l = 0; l <= rows - 3; l++) {
-        console.log(rows)
-        console.log(currentPlayerAnswerArr)
-        console.log('k=',k)
-        console.log('l=',l)
-        console.log(currentPlayerAnswerArr[k][l])
-        if (currentPlayerAnswerArr[k][l] === 1 &&
+        console.log(rows);
+        console.log(currentPlayerAnswerArr);
+        console.log("k=", k);
+        console.log("l=", l);
+        console.log(currentPlayerAnswerArr[k][l]);
+        if (
+          currentPlayerAnswerArr[k][l] === 1 &&
           currentPlayerAnswerArr[k + 1][l + 1] === 1 &&
           currentPlayerAnswerArr[k + 2][l + 2] === 1 &&
-          currentPlayerAnswerArr[k + 3][l + 3] === 1) {
-          highlightFourCoins('4diag-des', k, l)
-          score(currentPlayer)
-          displayWinner(currentPlayer)
-          winSound.play()
-          timeLeft = 10
-          clearInterval(interval)
-          indicateTimePort.textContent = 'Time Left'
-          indicateTimeLand.textContent = 'Time Left'
-          return true
-          break
+          currentPlayerAnswerArr[k + 3][l + 3] === 1
+        ) {
+          highlightFourCoins("4diag-des", k, l);
+          score(currentPlayer);
+          displayWinner(currentPlayer);
+          winSound.play();
+          timeLeft = 10;
+          clearInterval(interval);
+          indicateTimePort.textContent = "Time Left";
+          indicateTimeLand.textContent = "Time Left";
+          return true;
+          break;
         }
       }
     }
@@ -596,13 +605,13 @@ function checkWinCondition(currentPlayer, row, col) {
 // Check draw condition
 function checkDraw() {
   if (playerOneCount + playerTwoCount === 42) {
-    modalMgmt(modalType1)
-    type1Msg1.textContent = 'Draw!'
-    type1Msg2.textContent = 'Play Start Again!'
-    timeLeft = 10
-    clearInterval(interval)
-    indicateTimePort.textContent = 'Time Left'
-    indicateTimeLand.textContent = 'Time Left'
+    modalMgmt(modalType1);
+    type1Msg1.textContent = "Draw!";
+    type1Msg2.textContent = "Play Start Again!";
+    timeLeft = 10;
+    clearInterval(interval);
+    indicateTimePort.textContent = "Time Left";
+    indicateTimeLand.textContent = "Time Left";
     alertSound.play();
   }
 }
@@ -610,8 +619,8 @@ function checkDraw() {
 function resetArray() {
   for (var i = 0; i < rows; i++) {
     for (var j = 0; j < cols; j++) {
-      playerOneAnswerArr[i][j] = 0
-      playerTwoAnswerArr[i][j] = 0
+      playerOneAnswerArr[i][j] = 0;
+      playerTwoAnswerArr[i][j] = 0;
     }
   }
 }
@@ -620,46 +629,45 @@ function resetArray() {
 function resetGameBoard() {
   for (var i = 1; i <= rows; i++) {
     for (var j = 1; j <= cols; j++) {
-      var currentNode = document.getElementById('r' + i + '-c' + j)
-      currentNode.style.background = ''
+      var currentNode = document.getElementById("r" + i + "-c" + j);
+      currentNode.style.background = "";
       if (currentNode.firstChild) {
-        currentNode.firstChild.remove()
+        currentNode.firstChild.remove();
       }
     }
   }
 }
 
-var username1ScorePort = document.querySelector('.username1-score-port')
-var username2ScorePort = document.querySelector('.username2-score-port')
-var username1ScoreLand = document.querySelector('.username1-score-land')
-var username2ScoreLand = document.querySelector('.username2-score-land')
+var username1ScorePort = document.querySelector(".username1-score-port");
+var username2ScorePort = document.querySelector(".username2-score-port");
+var username1ScoreLand = document.querySelector(".username1-score-land");
+var username2ScoreLand = document.querySelector(".username2-score-land");
 
 function score(player) {
-  if (player === 'one') {
-    playerOneScore++
-    username1ScorePort.textContent = playerOneScore
-    username1ScoreLand.textContent = playerOneScore
-
-  } else if (player === 'two') {
-    playerTwoScore++
-    username2ScorePort.textContent = playerTwoScore
-    username2ScoreLand.textContent = playerTwoScore
+  if (player === "one") {
+    playerOneScore++;
+    username1ScorePort.textContent = playerOneScore;
+    username1ScoreLand.textContent = playerOneScore;
+  } else if (player === "two") {
+    playerTwoScore++;
+    username2ScorePort.textContent = playerTwoScore;
+    username2ScoreLand.textContent = playerTwoScore;
   }
 }
 
 // Display score after win condition happened
 function displayWinner(player) {
-  setTimeout(function() {
-    modalMgmt(modalType1)
-    timeLeft = 10
-    if (player === 'one') {
-      type1Msg1.textContent = 'Congratulations, ' + playerOne.value + '!'
-      type1Msg2.textContent = ' You won!'
-    } else if (player === 'two') {
-      type1Msg1.textContent = 'Congratulations, ' + playerTwo.value + '!'
-      type1Msg2.textContent = ' You won!'
+  setTimeout(function () {
+    modalMgmt(modalType1);
+    timeLeft = 10;
+    if (player === "one") {
+      type1Msg1.textContent = "Congratulations, " + playerOne.value + "!";
+      type1Msg2.textContent = " You won!";
+    } else if (player === "two") {
+      type1Msg1.textContent = "Congratulations, " + playerTwo.value + "!";
+      type1Msg2.textContent = " You won!";
     }
-  }, winDisplayTime)
+  }, winDisplayTime);
 }
 
 // Clear Score
@@ -673,7 +681,7 @@ function clearScoreFields() {
 }
 
 // Add sound effect
-var isSoundOn = false
+var isSoundOn = false;
 var moveCoin = new playSound("audio/move.mp3", false);
 var coinDrop = new playSound("audio/drop.mp3", false);
 var alertSound = new playSound("audio/draw.mp3", false);
@@ -681,158 +689,154 @@ var winSound = new playSound("audio/win.mp3", false);
 var clickSound = new playSound("audio/click.mp3", false);
 
 function playSound(src, isLoop) {
-  this.sound = document.createElement("audio")
-  this.sound.src = src
-  this.sound.loop = isLoop
-  this.sound.autoplay = false
-  this.sound.setAttribute("preload", "auto")
-  this.sound.setAttribute("controls", "none")
-  this.sound.style.display = "none"
-  document.body.appendChild(this.sound)
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.loop = isLoop;
+  this.sound.autoplay = false;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
   this.play = function () {
     if (isSoundOn) {
-      this.sound.play()
+      this.sound.play();
     }
-  }
+  };
   this.stop = function () {
-    this.sound.pause()
-  }
+    this.sound.pause();
+  };
 }
 
 // Timer setting
-var timeLeft
-var minutes = 0
-var seconds = 0
-var indicateTimePort = document.querySelector('.time-left-port')
-var indicateTimeLand = document.querySelector('.time-left-land')
-var interval
+var timeLeft;
+var minutes = 0;
+var seconds = 0;
+var indicateTimePort = document.querySelector(".time-left-port");
+var indicateTimeLand = document.querySelector(".time-left-land");
+var interval;
 
 function timer(obj, time) {
-  timeLeft = time
-  clearInterval(interval)
+  timeLeft = time;
+  clearInterval(interval);
   interval = setInterval(function () {
     if (timeLeft % 60 < 10) {
-      seconds = '0' + (timeLeft % 60);
+      seconds = "0" + (timeLeft % 60);
     } else {
       seconds = timeLeft % 60;
     }
 
-    indicateTimePort.textContent = '0: ' + seconds;
-    indicateTimeLand.textContent = '0: ' + seconds;
+    indicateTimePort.textContent = "0: " + seconds;
+    indicateTimeLand.textContent = "0: " + seconds;
 
     if (timeLeft === 0) {
-      setTimeout(function () {
-        // indicateTimePort.textContent = ' '
-        // indicateTimeLand.textContent = ' '
-      }, alertMsgTime)
-      indicateTimePort.textContent = 'Time Out!'
-      indicateTimeLand.textContent = 'Time Out!'
-      alertSound.play()
-      switchPlayer(obj)
+      indicateTimePort.textContent = "Time Out!";
+      indicateTimeLand.textContent = "Time Out!";
+      alertSound.play();
+      switchPlayer(obj);
     }
-    timeLeft--
-  }, 1000)
+    timeLeft--;
+  }, 1000);
 }
 
 // Sound toggle
-var soundBtnPort = document.querySelector('.sound-btn-port')
-var soundOnOffPort = document.querySelector('.sound-onoff-port')
-var soundBtnLand = document.querySelector('.sound-btn-land')
-var soundOnOffLand = document.querySelector('.sound-onoff-land')
+var soundBtnPort = document.querySelector(".sound-btn-port");
+var soundOnOffPort = document.querySelector(".sound-onoff-port");
+var soundBtnLand = document.querySelector(".sound-btn-land");
+var soundOnOffLand = document.querySelector(".sound-onoff-land");
 
-soundBtnPort.addEventListener('click', function () {
-  clickSound.play()
-  soundToggle()
-})
-soundBtnLand.addEventListener('click', function () {
-  clickSound.play()
-  soundToggle()
-})
+soundBtnPort.addEventListener("click", function () {
+  clickSound.play();
+  soundToggle();
+});
+soundBtnLand.addEventListener("click", function () {
+  clickSound.play();
+  soundToggle();
+});
 
 function soundToggle() {
-  isSoundOn = !isSoundOn
+  isSoundOn = !isSoundOn;
   if (isSoundOn) {
-    soundOnOffPort.textContent = 'ON'
-    soundOnOffPort.style.color = 'greenyellow'
-    soundOnOffLand.textContent = 'ON'
-    soundOnOffLand.style.color = 'greenyellow'
+    soundOnOffPort.textContent = "ON";
+    soundOnOffPort.style.color = "greenyellow";
+    soundOnOffLand.textContent = "ON";
+    soundOnOffLand.style.color = "greenyellow";
   } else {
-    soundOnOffPort.textContent = 'OFF'
-    soundOnOffPort.style.color = 'red'
-    soundOnOffLand.textContent = 'OFF'
-    soundOnOffLand.style.color = 'red'
+    soundOnOffPort.textContent = "OFF";
+    soundOnOffPort.style.color = "red";
+    soundOnOffLand.textContent = "OFF";
+    soundOnOffLand.style.color = "red";
   }
 }
 
 function modalMgmt(modalObj) {
-  modal.style.display = 'none'
-  modalUsername.style.display = 'none'
-  modalType1.style.display = 'none'
-  if(modalObj) {
-    modal.style.display = 'block'
-    modalObj.style.display = 'block'
+  modal.style.display = "none";
+  modalUsername.style.display = "none";
+  modalType1.style.display = "none";
+  if (modalObj) {
+    modal.style.display = "block";
+    modalObj.style.display = "block";
   }
 }
 
 // Start game functions
-var startBtn = document.querySelector('.start-btn')
-startBtn.addEventListener('click', function() {
-  clickSound.play()
-  startGame(10)
-})
+var startBtn = document.querySelector(".start-btn");
+startBtn.addEventListener("click", function () {
+  clickSound.play();
+  startGame(10);
+});
 
-var playerOne = document.querySelector('.player1')
-var playerTwo = document.querySelector('.player2')
+var playerOne = document.querySelector(".player1");
+var playerTwo = document.querySelector(".player2");
 
 //for portrait
-var userNameOnePort = document.querySelector('.username1-port')
-var userNameTwoPort = document.querySelector('.username2-port')
+var userNameOnePort = document.querySelector(".username1-port");
+var userNameTwoPort = document.querySelector(".username2-port");
 
 //for landscape
-var userNameOneLand = document.querySelector('.username1-land')
-var userNameTwoLand = document.querySelector('.username2-land')
+var userNameOneLand = document.querySelector(".username1-land");
+var userNameTwoLand = document.querySelector(".username2-land");
 
 function startGame(time) {
-  isWin = false
-  modalMgmt(null)
-  resetArray()
-  resetGameBoard()
+  isWin = false;
+  modalMgmt(null);
+  resetArray();
+  resetGameBoard();
 
-  if (playerOne.value === '') {
-    playerOne.value = 'player 1'
+  if (playerOne.value === "") {
+    playerOne.value = "player 1";
   }
-  if (playerTwo.value === '') {
-    playerTwo.value = 'player 2'
+  if (playerTwo.value === "") {
+    playerTwo.value = "player 2";
   }
 
-  userNameOnePort.textContent = playerOne.value
-  userNameTwoPort.textContent = playerTwo.value
-  userNameOneLand.textContent = playerOne.value
-  userNameTwoLand.textContent = playerTwo.value
+  userNameOnePort.textContent = playerOne.value;
+  userNameTwoPort.textContent = playerTwo.value;
+  userNameOneLand.textContent = playerOne.value;
+  userNameTwoLand.textContent = playerTwo.value;
 
-  coinLocation = firstCoinLocation
-  currentLocationID = 'r0-c4'
+  coinLocation = firstCoinLocation;
+  currentLocationID = "r0-c4";
 
-  var playerCoinObj
-  if (currentPlayer === 'one') {
-    userNameOnePort.style.color = 'gold'
-    userNameTwoPort.style.color = 'white'
-    userNameOneLand.style.color = 'gold'
-    userNameTwoLand.style.color = 'white'
-    coinLocation.appendChild(playerOneCoinObj)
-    playerCoinObj = playerOneCoinObj
+  var playerCoinObj;
+  if (currentPlayer === "one") {
+    userNameOnePort.style.color = "gold";
+    userNameTwoPort.style.color = "white";
+    userNameOneLand.style.color = "gold";
+    userNameTwoLand.style.color = "white";
+    coinLocation.appendChild(playerOneCoinObj);
+    playerCoinObj = playerOneCoinObj;
   } else {
-    userNameOnePort.style.color = 'white'
-    userNameTwoPort.style.color = 'gold'
-    userNameOneLand.style.color = 'white'
-    userNameTwoLand.style.color = 'gold'
-    coinLocation.appendChild(playerTwoCoinObj)
-    playerCoinObj = playerTwoCoinObj
+    userNameOnePort.style.color = "white";
+    userNameTwoPort.style.color = "gold";
+    userNameOneLand.style.color = "white";
+    userNameTwoLand.style.color = "gold";
+    coinLocation.appendChild(playerTwoCoinObj);
+    playerCoinObj = playerTwoCoinObj;
   }
 
-  playerCoinObj = removeDropCoinAnimation(playerCoinObj)
+  playerCoinObj = removeDropCoinAnimation(playerCoinObj);
 
-  displayTarget()
-  addAllEvents()
-  timer(playerCoinObj, time)
+  displayTarget();
+  addAllEvents();
+  timer(playerCoinObj, time);
 }
